@@ -5,34 +5,38 @@ import com.badlogic.gdx.Gdx;
 import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.model.*;
 import net.aknyazev.game.editor.ui.UI;
+import net.aknyazev.game.editor.ui.command.Command;
+import net.aknyazev.game.editor.world.RenderData;
 
 /**
  * User: MrKnyaz
  * Date: 1/3/14
  */
-public class DrawingState extends AbstractControlState {
+public class SpriteTool extends AbstractTool {
 
-    public DrawingState(RenderData renderData, UI ui) {
+    public SpriteTool(RenderData renderData, UI ui) {
         super(renderData, ui);
     }
 
     @Override
-    public void scrolled(int amount) {
+    public void changeItem(int amount) {
         Atlas currentAtlas = ui.getCurrentAtlas();
         if (amount > 0) {
             ui.nextRegion();
         } else {
             ui.previousRegion();
         }
-        renderData.setDynamicItem(new SpriteItem(currentAtlas.getRegions()[currentAtlas.getCurrentRegion()]));
+        renderData.setDynamicItem(new SpriteObject(currentAtlas.getRegions()[currentAtlas.getCurrentRegion()]));
         renderData.getDynamicItem().setPosX(Gdx.input.getX()/Constants.getPixelsPerUnit());
         renderData.getDynamicItem().setPosY(Constants.getViewPortHeight() - Gdx.input.getY() / Constants.getPixelsPerUnit());
 
     }
 
     @Override
-    public void mouseMoved(int x, int y) {
-        //System.out.println(x + ", " + y);
+    public void attachToMouse(int x, int y) {
+
+        System.out.println(x + ", " + y);
+        //System.out.println("MOUSE:"+Mouse.getX() + ", " + y);
         if (renderData.getDynamicItem() != null) {
             //System.out.println(x/Constants.getViewPortWidth()+", "+y/Constants.getViewPortHeight());
             renderData.getDynamicItem().setPosX(x/Constants.getPixelsPerUnit());
@@ -41,8 +45,9 @@ public class DrawingState extends AbstractControlState {
         }
     }
 
-    public void touchDown(int screenX, int screenY, int pointer, int button) {
+    public Command submit(int screenX, int screenY) {
         System.out.println(screenX+" "+screenY);
-        renderData.getLayers()[0].getItems().add(renderData.getDynamicItem().copy());
+        //renderData.getLayers()[0].getItems().add(renderData.getDynamicItem().copy());
+        return renderData.addItem(renderData.getDynamicItem().copy());
     }
 }

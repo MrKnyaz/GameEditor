@@ -1,10 +1,9 @@
 package net.aknyazev.game.editor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import net.aknyazev.game.editor.model.AbstractItem;
+import net.aknyazev.game.editor.model.AbstractGameObject;
 import net.aknyazev.game.editor.model.Layer;
-import net.aknyazev.game.editor.model.RenderData;
+import net.aknyazev.game.editor.world.RenderData;
 
 import java.util.List;
 
@@ -21,12 +20,12 @@ public class MapRenderer {
 
     public void render(SpriteBatch batch, float delta) {
         Layer layer = renderData.getLayers()[0];
-        List<AbstractItem> items = layer.getItems();
+        List<AbstractGameObject> items = layer.getItems();
         for (int i = 0; i < items.size(); i++) {
-            AbstractItem abstractItem =  items.get(i);
+            AbstractGameObject abstractItem =  items.get(i);
             abstractItem.draw(batch);
         }
-        AbstractItem dynamicItem = renderData.getDynamicItem();
+        AbstractGameObject dynamicItem = renderData.getDynamicItem();
         if (dynamicItem != null) {
             dynamicItem.draw(batch);
         }

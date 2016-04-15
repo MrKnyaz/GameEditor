@@ -8,10 +8,10 @@ import net.aknyazev.game.editor.Constants;
  * Author: MrKnyaz
  * Date: 05.02.14
  */
-public class SpriteItem extends AbstractItem {
+public class SpriteObject extends AbstractGameObject {
     TextureRegion region;
 
-    public SpriteItem(TextureRegion region) {
+    public SpriteObject(TextureRegion region) {
         this.region = region;
     }
 
@@ -27,8 +27,8 @@ public class SpriteItem extends AbstractItem {
         this.region = region;
     }
 
-    public SpriteItem copy() {
-        SpriteItem result = new SpriteItem(region);
+    public SpriteObject copy() {
+        SpriteObject result = new SpriteObject(region);
         result.setPosX(posX);
         result.setPosY(posY);
         result.setRotation(rotation);

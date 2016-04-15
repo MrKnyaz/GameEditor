@@ -11,14 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import net.aknyazev.game.editor.model.Atlas;
-import net.aknyazev.game.editor.ui.control.DrawingState;
+import net.aknyazev.game.editor.ui.control.SpriteTool;
 import net.aknyazev.game.editor.ui.control.MapInputProcessor;
-import net.aknyazev.game.editor.model.RenderData;
+import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.model.UIData;
-import net.aknyazev.game.editor.ui.control.ObjectDrawingState;
-import net.aknyazev.game.editor.ui.control.SelectionState;
+import net.aknyazev.game.editor.ui.control.PhysicsRectangleTool;
+import net.aknyazev.game.editor.ui.control.SelectionTool;
 import net.aknyazev.game.editor.util.FileUtils;
 
 /**
@@ -32,9 +31,9 @@ public class UI {
     Skin skin;
 
     //data
-    private SelectionState selectionState;
-    private DrawingState drawingState;
-    private ObjectDrawingState objectDrawingState;
+    private SelectionTool selectionState;
+    private SpriteTool drawingState;
+    private PhysicsRectangleTool objectDrawingState;
     private Atlas[] atlases;
     private Atlas currentAtlas;
     UIData uiData;
@@ -56,9 +55,9 @@ public class UI {
     public UI(RenderData renderData) {
         this.renderData = renderData;
         this.uiData = new UIData();
-        selectionState = new SelectionState(renderData, this);
-        drawingState = new DrawingState(renderData, this);
-        objectDrawingState = new ObjectDrawingState(renderData, this);
+        selectionState = new SelectionTool(renderData, this);
+        drawingState = new SpriteTool(renderData, this);
+        objectDrawingState = new PhysicsRectangleTool(renderData, this);
 
         stage = new Stage();
         mapInputProcessor = new MapInputProcessor(drawingState);
@@ -188,17 +187,17 @@ public class UI {
     }
     public void updateButtonsColors() {
         //first state buttons and InputProcessor state
-        if (mapInputProcessor.getState() instanceof SelectionState) {
+        if (mapInputProcessor.getState() instanceof SelectionTool) {
             selection.setColor(0, 1, 1, 1);
         } else {
             selection.setColor(1,1,1,1);
         }
-        if (mapInputProcessor.getState() instanceof DrawingState) {
+        if (mapInputProcessor.getState() instanceof SpriteTool) {
             drawing.setColor(0, 1, 1, 1);
         } else {
             drawing.setColor(1,1,1,1);
         }
-        if (mapInputProcessor.getState() instanceof ObjectDrawingState) {
+        if (mapInputProcessor.getState() instanceof PhysicsRectangleTool) {
             objectDrawing.setColor(0,1,1,1);
         } else {
             objectDrawing.setColor(1,1,1,1);

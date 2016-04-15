@@ -4,19 +4,17 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.MapRenderer;
-import net.aknyazev.game.editor.model.RenderData;
+import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.ui.UI;
 
 public class PlatformerMapEditor extends ApplicationAdapter {
 	UI ui;
 	MapRenderer mapRenderer;
 	SpriteBatch batch;
-	OrthographicCamera cam;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -32,19 +30,20 @@ public class PlatformerMapEditor extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		ui.render(delta);
-		batch.setProjectionMatrix(cam.combined);
+		batch.setProjectionMatrix(Constants.cam.combined);
 		batch.begin();
 		mapRenderer.render(batch, delta);
 		batch.end();
 	}
+
 	@Override
 	public void resize(int width, int height) {
 		ui.resize(width, height);
 		//cam = new OrthographicCamera(20.0f, 20.0f * height / width);
 		System.out.println(Constants.getViewPortWidth()+" "+Constants.getViewPortHeight());
-		cam = new OrthographicCamera(Constants.getViewPortWidth(), Constants.getViewPortHeight());
-		cam.position.set(cam.viewportWidth/2f, cam.viewportHeight/2f, 0);
-		cam.update();
+		Constants.cam = new OrthographicCamera(Constants.getViewPortWidth(), Constants.getViewPortHeight());
+		Constants.cam.position.set(Constants.cam.viewportWidth/2f, Constants.cam.viewportHeight/2f, 0);
+		Constants.cam.update();
 		//cam.setToOrtho(true, 10, 10);
 
 	}

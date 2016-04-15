@@ -1,5 +1,7 @@
 package net.aknyazev.game.editor.model;
 
+import net.aknyazev.game.editor.datastructures.GameObjectTree;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +11,23 @@ import java.util.List;
  */
 public class Layer {
     float offsetCoefficient;
-    List<AbstractItem> items;
+    GameObjectTree<AbstractGameObject> items;
     String name;
     public Layer(String name) {
-        items = new ArrayList<AbstractItem>();
+        items = new GameObjectTree<AbstractGameObject>();
         this.name = name;
     }
 
-    public List<AbstractItem> getItems() {
-        return items;
+    public List<AbstractGameObject> getItems() {
+        return items.getAsList();
+    }
+
+    public void addItem(AbstractGameObject item) {
+        items.add(item);
+    }
+
+    public void removeItem(AbstractGameObject item) {
+        items.remove(item);
     }
     public String toString() {
         return name;
