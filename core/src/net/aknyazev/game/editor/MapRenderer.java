@@ -19,15 +19,20 @@ public class MapRenderer {
     }
 
     public void render(SpriteBatch batch, float delta) {
-        Layer layer = renderData.getLayers()[0];
-        List<AbstractGameObject> items = layer.getItems();
-        for (int i = 0; i < items.size(); i++) {
-            AbstractGameObject abstractItem =  items.get(i);
-            abstractItem.draw(batch);
-        }
-        AbstractGameObject dynamicItem = renderData.getDynamicItem();
-        if (dynamicItem != null) {
-            dynamicItem.draw(batch);
+        Layer[] layers = renderData.getLayers();
+        for (int i = 0; i < layers.length; i++) {
+            Layer layer = layers[i];
+            List<AbstractGameObject> items = layer.getItems();
+            for (int j = 0; j < items.size(); j++) {
+                AbstractGameObject abstractItem =  items.get(j);
+                abstractItem.draw(batch);
+            }
+            if (renderData.getCurrentLayer() == i) {
+                AbstractGameObject dynamicItem = renderData.getDynamicItem();
+                if (dynamicItem != null) {
+                    dynamicItem.draw(batch);
+                }
+            }
         }
 
     }

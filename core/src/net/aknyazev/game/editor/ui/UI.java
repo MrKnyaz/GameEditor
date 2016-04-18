@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import net.aknyazev.game.editor.model.Atlas;
 import net.aknyazev.game.editor.ui.control.SpriteTool;
 import net.aknyazev.game.editor.ui.control.MapInputProcessor;
@@ -18,7 +17,6 @@ import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.model.UIData;
 import net.aknyazev.game.editor.ui.control.PhysicsRectangleTool;
 import net.aknyazev.game.editor.ui.control.SelectionTool;
-import net.aknyazev.game.editor.util.FileUtils;
 
 /**
  * Author: MrKnyaz
@@ -31,26 +29,24 @@ public class UI {
     Skin skin;
 
     //data
-    private SelectionTool selectionState;
-    private SpriteTool drawingState;
-    private PhysicsRectangleTool objectDrawingState;
-    private Atlas[] atlases;
-    private Atlas currentAtlas;
+    SelectionTool selectionState;
+    SpriteTool drawingState;
+    PhysicsRectangleTool objectDrawingState;
+    Atlas[] atlases;
+    Atlas currentAtlas;
     UIData uiData;
     RenderData renderData;
 
 
     //ui
-    TextField pathToGraphics;
-    TextButton submitPath;
+    TextButton selectionToolButton;
+    TextButton spriteToolButton;
     SelectBox<Atlas> atlasSelect;
     SelectBox regionSelect;
-    SelectBox layerSelect;
-    CheckBox allLayersCheck;
-    TextButton selection;
-    TextButton drawing;
-    TextButton objectDrawing;
-    TextButton save;
+
+    TextButton physicsToolButton;
+    SelectBox physicsSelect;
+
 
     public UI(RenderData renderData) {
         this.renderData = renderData;
@@ -77,42 +73,38 @@ public class UI {
         Table table = new Table();
         stage.addActor(table);
         table.setSize(Gdx.graphics.getWidth(), 100);
-        table.setPosition(0, 10);
+        table.setPosition(0, 60);
         //table.debug();
 
         //Add ui
-        pathToGraphics = new TextField("Path to images",skin);
         atlasSelect = new SelectBox<Atlas>(skin);
         regionSelect = new SelectBox<TextureRegion>(skin);
-        layerSelect = new SelectBox(skin);
-        allLayersCheck = new CheckBox("All layers", skin);
 
-        submitPath = new TextButton("Ok", skin);
-        selection = new TextButton("Selection", skin);
-        drawing = new TextButton("Drawing", skin);
-        objectDrawing = new TextButton("ObjectDrawing", skin);
-        save = new TextButton("Save map", skin);
+        selectionToolButton = new TextButton("Selection", skin);
+        spriteToolButton = new TextButton("Sprite Tool", skin);
+        physicsToolButton = new TextButton("Physics Tool", skin);
 
-        table.add(pathToGraphics);
-        table.add(submitPath).align(Align.left);
-        table.add(selection).right();
-        table.add(drawing).right();
-        table.add(objectDrawing).right();
-        table.add(save).right().colspan(2);
-        table.row();
-        table.add(new Label("Atlas:", skin)).right();
-        table.add(atlasSelect).left();
-        table.add(new Label("Region:", skin)).right();
-        table.add(regionSelect).left();
-        table.add(new Label("Layer:", skin)).right();
-        table.add(layerSelect).left();
-        table.add(allLayersCheck);
+        table.add(new SaveLoadPanel(this, skin)).top();
+        //sprite tool layout
+        Table spriteToolTable = new Table().pad(5f);
+        spriteToolTable.add(spriteToolButton).colspan(2).left();
+        spriteToolTable.row();
+        spriteToolTable.add(new Label("Atlas:", skin)).right();
+        spriteToolTable.add(atlasSelect).left();
+        spriteToolTable.add(new Label("Region:", skin)).right();
+        spriteToolTable.add(regionSelect).left();
+        table.add(spriteToolTable).top();
+
+        table.add(selectionToolButton).top().pad(5f);
+        table.add(physicsToolButton).top().pad(5f);
+
+        table.add(new LayerPanel(this, skin)).top();
 
     }
 
     private void addControl() {
         //Adding state control, i.e. Selection, Drawing or ObjectDrawing
-        selection.addListener(new ClickListener() {
+        selectionToolButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -121,7 +113,7 @@ public class UI {
                 updateButtonsColors();
             }
         });
-        drawing.addListener(new ClickListener() {
+        spriteToolButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -130,7 +122,7 @@ public class UI {
                 updateButtonsColors();
             }
         });
-        objectDrawing.addListener(new ClickListener() {
+        physicsToolButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -139,18 +131,6 @@ public class UI {
                 updateButtonsColors();
             }
         });
-        //Load image data
-        submitPath.addListener((new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                atlases = FileUtils.loadFromPack("no path");
-                //update atlases
-                atlasSelect.setItems(atlases);
-                regionSelect.setItems(atlases[0].getRegions());
-                renderData.setDynamicItem(null);
-            }
-        }));
         //Atlas selected event
         atlasSelect.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
@@ -188,19 +168,19 @@ public class UI {
     public void updateButtonsColors() {
         //first state buttons and InputProcessor state
         if (mapInputProcessor.getState() instanceof SelectionTool) {
-            selection.setColor(0, 1, 1, 1);
+            selectionToolButton.setColor(0, 1, 1, 1);
         } else {
-            selection.setColor(1,1,1,1);
+            selectionToolButton.setColor(1, 1, 1, 1);
         }
         if (mapInputProcessor.getState() instanceof SpriteTool) {
-            drawing.setColor(0, 1, 1, 1);
+            spriteToolButton.setColor(0, 1, 1, 1);
         } else {
-            drawing.setColor(1,1,1,1);
+            spriteToolButton.setColor(1, 1, 1, 1);
         }
         if (mapInputProcessor.getState() instanceof PhysicsRectangleTool) {
-            objectDrawing.setColor(0,1,1,1);
+            physicsToolButton.setColor(0, 1, 1, 1);
         } else {
-            objectDrawing.setColor(1,1,1,1);
+            physicsToolButton.setColor(1, 1, 1, 1);
         }
     }
     /*public void updateFromModels() {

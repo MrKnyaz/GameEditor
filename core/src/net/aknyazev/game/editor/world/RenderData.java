@@ -14,13 +14,14 @@ public class RenderData {
     public long size;
 
     private Layer[] layers;
-    private boolean allLayers;
+    private boolean allLayers = true;
     private int currentLayer;
     private AbstractGameObject dynamicItem;
 
     public RenderData() {
-        layers = new Layer[1];
+        layers = new Layer[2];
         layers[0] = new Layer("testLayer");
+        layers[1] = new Layer("testLayer1");
     }
 
     public boolean isAllLayers() {
