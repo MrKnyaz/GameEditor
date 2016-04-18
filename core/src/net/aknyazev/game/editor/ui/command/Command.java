@@ -32,7 +32,7 @@ abstract public class Command {
         return this;
     }
 
-    abstract public void runCommand();
-    abstract public void undoCommand();
-    abstract public void redoCommand();
+    abstract protected void runCommand();
+    abstract protected void undoCommand();
+    abstract protected void redoCommand();
 }

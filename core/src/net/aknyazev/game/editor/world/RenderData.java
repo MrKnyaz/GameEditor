@@ -3,6 +3,7 @@ package net.aknyazev.game.editor.world;
 
 import net.aknyazev.game.editor.model.AbstractGameObject;
 import net.aknyazev.game.editor.model.Layer;
+import net.aknyazev.game.editor.ui.command.AddCommand;
 import net.aknyazev.game.editor.ui.command.Command;
 
 /**
@@ -62,29 +63,5 @@ public class RenderData {
         return new AddCommand(item, layers[currentLayer]).execute();
     }
 
-    private class AddCommand extends Command {
 
-        AbstractGameObject item;
-        Layer layer;
-
-        public AddCommand(AbstractGameObject item, Layer layer) {
-            this.item = item;
-            this.layer = layer;
-        }
-
-        @Override
-        public void runCommand() {
-            layer.addItem(item);
-        }
-
-        @Override
-        public void undoCommand() {
-            layer.removeItem(item);
-        }
-
-        @Override
-        public void redoCommand() {
-            runCommand();
-        }
-    }
 }
