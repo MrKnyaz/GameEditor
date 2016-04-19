@@ -11,8 +11,9 @@ public class DesktopLauncher {
 
 		config.width = 1700;
 		config.height = 1000;
-		config.vSyncEnabled = true;
-		config.resizable = true;
+		config.vSyncEnabled = false;
+		config.resizable = false;
+		//config.fullscreen = true;
 		new LwjglApplication(new PlatformerMapEditor(), config);
 	}
 }

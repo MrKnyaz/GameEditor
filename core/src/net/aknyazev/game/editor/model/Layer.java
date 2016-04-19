@@ -10,7 +10,8 @@ import java.util.List;
  * Date: 05.02.14
  */
 public class Layer {
-    float offsetCoefficient;
+    //1 - normal speed, 0 - doesn't move
+    float speed = 1.0f;
     GameObjectTree<AbstractGameObject> items;
     String name;
     public Layer(String name) {
@@ -31,5 +32,13 @@ public class Layer {
     }
     public String toString() {
         return name;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

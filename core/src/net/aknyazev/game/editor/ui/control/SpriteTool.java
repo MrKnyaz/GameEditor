@@ -34,19 +34,18 @@ public class SpriteTool extends AbstractTool {
 
     @Override
     public void attachToMouse(int x, int y) {
-
-        System.out.println(x + ", " + y);
-        //System.out.println("MOUSE:"+Mouse.getX() + ", " + y);
         if (renderData.getDynamicItem() != null) {
-            //System.out.println(x/Constants.getViewPortWidth()+", "+y/Constants.getViewPortHeight());
-            renderData.getDynamicItem().setPosX(x/Constants.getPixelsPerUnit());
-            System.out.println(Constants.getViewPortHeight()+"      "+y/Constants.getViewPortHeight()+"             "+y);
-            renderData.getDynamicItem().setPosY(Constants.getViewPortHeight()-y/Constants.getPixelsPerUnit());
+            System.out.println("POS X: "+renderData.getWorldX(x));
+            System.out.println("POS Y: "+renderData.getWorldY(y));
+            renderData.getDynamicItem().setPosX(renderData.getWorldX(x));
+            renderData.getDynamicItem().setPosY(renderData.getWorldY(y));
         }
     }
 
     public Command submit(int screenX, int screenY) {
-        System.out.println(screenX+" "+screenY);
+        System.out.println("CURRENT LAYER: "+renderData.getLayers()[renderData.getCurrentLayer()].getSpeed());
+        System.out.println("POS CAMERA: "+Constants.cam.position);
+        System.out.println(renderData.getDynamicItem());
         //renderData.getLayers()[0].getItems().add(renderData.getDynamicItem().copy());
         return renderData.addItem(renderData.getDynamicItem().copy());
     }

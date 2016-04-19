@@ -2,6 +2,7 @@ package net.aknyazev.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -28,14 +29,32 @@ public class PlatformerMapEditor extends ApplicationAdapter {
 		final float delta = Gdx.graphics.getRawDeltaTime();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		ui.render(delta);
+		moveCamera(delta);
+		//Constants.cam.translate(10f*delta,0);
 		batch.setProjectionMatrix(Constants.cam.combined);
 		batch.begin();
 		mapRenderer.render(batch, delta);
 		batch.end();
+		ui.render(delta);
+		//System.out.println(delta);
 	}
 
+	void moveCamera(float delta) {
+		float translation = 10f*delta;
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+			Constants.cam.translate(-translation, 0);
+			Constants.cam.update();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+			Constants.cam.translate(0, translation);
+			Constants.cam.update();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+			Constants.cam.translate(0, -translation);
+			Constants.cam.update();
+		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+			Constants.cam.translate(translation, 0);
+			Constants.cam.update();
+		}
+	}
 	@Override
 	public void resize(int width, int height) {
 		ui.resize(width, height);

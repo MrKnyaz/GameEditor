@@ -82,4 +82,9 @@ public abstract class AbstractGameObject {
     public AbstractGameObject copy() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return posX+" "+posY;
+    }
 }

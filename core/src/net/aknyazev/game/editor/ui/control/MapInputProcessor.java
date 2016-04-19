@@ -3,6 +3,7 @@ package net.aknyazev.game.editor.ui.control;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.ui.command.Command;
 
 import java.util.LinkedList;
@@ -49,7 +50,6 @@ public class MapInputProcessor implements InputProcessor {
     public boolean keyUp(int i) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
-
     @Override
     public boolean keyTyped(char c) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.

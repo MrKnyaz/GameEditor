@@ -1,6 +1,8 @@
 package net.aknyazev.game.editor.world;
 
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.model.AbstractGameObject;
 import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.ui.command.AddCommand;
@@ -23,6 +25,7 @@ public class RenderData {
         layers = new Layer[2];
         layers[0] = new Layer("testLayer");
         layers[1] = new Layer("testLayer1");
+        layers[0].setSpeed(0.2f);
     }
 
     public boolean isAllLayers() {
@@ -63,5 +66,15 @@ public class RenderData {
         return new AddCommand(item, layers[currentLayer]).execute();
     }
 
+    public float getWorldX(int screenX) {
+        OrthographicCamera camera = Constants.cam;
+        return (camera.position.x-camera.viewportWidth/2)*layers[currentLayer].getSpeed()
+                +screenX / Constants.getPixelsPerUnit();
+    }
 
+    public float getWorldY(int screenY) {
+        OrthographicCamera camera = Constants.cam;
+        return (camera.position.y-camera.viewportHeight/2)*layers[currentLayer].getSpeed()
+                +(Constants.getViewPortHeight()-screenY/Constants.getPixelsPerUnit());
+    }
 }
