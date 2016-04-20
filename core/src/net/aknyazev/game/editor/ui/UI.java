@@ -6,17 +6,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.aknyazev.game.editor.model.Atlas;
-import net.aknyazev.game.editor.ui.control.SpriteTool;
-import net.aknyazev.game.editor.ui.control.MapInputProcessor;
-import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.model.UIData;
+import net.aknyazev.game.editor.ui.control.MapInputProcessor;
 import net.aknyazev.game.editor.ui.control.PhysicsRectangleTool;
 import net.aknyazev.game.editor.ui.control.SelectionTool;
+import net.aknyazev.game.editor.ui.control.SpriteTool;
+import net.aknyazev.game.editor.world.RenderData;
 
 /**
  * Author: MrKnyaz
@@ -56,6 +57,13 @@ public class UI {
         objectDrawingState = new PhysicsRectangleTool(renderData, this);
 
         stage = new Stage();
+        //unfocus textfields
+        stage.getRoot().addCaptureListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (!(event.getTarget() instanceof TextField)) stage.setKeyboardFocus(null);
+                return false;
+            }
+        });
         mapInputProcessor = new MapInputProcessor(drawingState);
         InputMultiplexer inputs = new InputMultiplexer();
         inputs.addProcessor(stage);
@@ -133,18 +141,19 @@ public class UI {
         });
         //Atlas selected event
         atlasSelect.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 currentAtlas = atlasSelect.getSelected();
             }
         });
         //Region selected event
         regionSelect.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed(ChangeEvent event, Actor actor) {
                 //System.out.println("region "+regionSelect.getSelectionIndex());
                 currentAtlas.setCurrentRegion(regionSelect.getSelectedIndex());
             }
         });
     }
+
     public void resize(int width, int height) {
 
         stage.getViewport().update(width, height);
@@ -165,6 +174,7 @@ public class UI {
         updateButtonsColors();
         //updateFromModels();
     }
+
     public void updateButtonsColors() {
         //first state buttons and InputProcessor state
         if (mapInputProcessor.getState() instanceof SelectionTool) {
@@ -212,10 +222,11 @@ public class UI {
 
     public void nextRegion() {
         int currentIndex = regionSelect.getSelectedIndex();
-        regionSelect.setSelectedIndex(currentIndex<regionSelect.getItems().size-1?currentIndex+1:0);
+        regionSelect.setSelectedIndex(currentIndex < regionSelect.getItems().size - 1 ? currentIndex + 1 : 0);
     }
+
     public void previousRegion() {
         int currentIndex = regionSelect.getSelectedIndex();
-        regionSelect.setSelectedIndex(currentIndex>0?regionSelect.getSelectedIndex()-1:regionSelect.getItems().size-1);
+        regionSelect.setSelectedIndex(currentIndex > 0 ? regionSelect.getSelectedIndex() - 1 : regionSelect.getItems().size - 1);
     }
 }

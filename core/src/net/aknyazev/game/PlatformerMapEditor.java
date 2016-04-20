@@ -41,16 +41,16 @@ public class PlatformerMapEditor extends ApplicationAdapter {
 
 	void moveCamera(float delta) {
 		float translation = 10f*delta;
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			Constants.cam.translate(-translation, 0);
 			Constants.cam.update();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+		} else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			Constants.cam.translate(0, translation);
 			Constants.cam.update();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+		} else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			Constants.cam.translate(0, -translation);
 			Constants.cam.update();
-		} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+		} else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			Constants.cam.translate(translation, 0);
 			Constants.cam.update();
 		}

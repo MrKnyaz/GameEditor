@@ -68,6 +68,9 @@ public class RenderData {
 
     public float getWorldX(int screenX) {
         OrthographicCamera camera = Constants.cam;
+        //because of stupid middle-screen coordinates I moved camera by half of viewport at the beginning
+        //So we apply speed to layer only after we subtract this half
+        //This is done to have layers at the same position on start
         return (camera.position.x-camera.viewportWidth/2)*layers[currentLayer].getSpeed()
                 +screenX / Constants.getPixelsPerUnit();
     }

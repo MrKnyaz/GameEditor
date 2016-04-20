@@ -41,10 +41,10 @@ public class MapRenderer {
                     dynamicItem.draw(batch);
                 }
             }
-            cam.position.x = camStandartPosX;
-            cam.position.y = camStandartPosY;
-            cam.update();
         }
+        cam.position.x = camStandartPosX;
+        cam.position.y = camStandartPosY;
+        cam.update();
 
     }
 }
