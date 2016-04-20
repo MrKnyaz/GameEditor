@@ -57,7 +57,7 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println(screenX+" "+screenY);
+        System.out.println(screenX + " " + screenY);
         Command command = state.submit(screenX, screenY);
         if (command != null) {
             undoList.push(command);
@@ -83,7 +83,13 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int i) {
-        state.changeItem(i);
+        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+            state.scale(i*0.1f);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+            state.rotate(i);
+        } else {
+            state.changeItem(i);
+        }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

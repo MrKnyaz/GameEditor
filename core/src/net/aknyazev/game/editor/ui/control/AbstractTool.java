@@ -1,6 +1,7 @@
 package net.aknyazev.game.editor.ui.control;
 
 
+import net.aknyazev.game.editor.model.AbstractGameObject;
 import net.aknyazev.game.editor.ui.command.Command;
 import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.ui.UI;
@@ -21,7 +22,21 @@ abstract public class AbstractTool {
     public void changeItem(int amount) {}
 
     public Command rotate(int amount) {return null;}
-    public Command scale(int amount) {return null;}
+    public Command scale(float amount) {
+        System.out.println(amount+" scale");
+        AbstractGameObject item = renderData.getDynamicItem();
+        float scaleX = item.getScaleX();
+        float scaleY = item.getScaleY();
+        if (scaleX + amount > 0) {
+            scaleX += amount;
+            item.setScaleX(scaleX);
+        }
+        if (scaleY + amount > 0) {
+            scaleY += amount;
+            item.setScaleY(scaleY);
+        }
+        return null;
+    }
     public Command scaleX(int amount) {return null;}
     public Command scaleY(int amount) {return null;}
 

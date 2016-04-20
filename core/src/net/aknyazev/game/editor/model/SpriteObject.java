@@ -16,7 +16,7 @@ public class SpriteObject extends AbstractGameObject {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(region, posX, posY, region.getRegionWidth()/ Constants.PIXPERUNIT, region.getRegionHeight()/Constants.PIXPERUNIT);
+        batch.draw(region, posX, posY, region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX, region.getRegionHeight()/Constants.PIXPERUNIT * scaleY);
     }
 
     public TextureRegion getRegion() {
@@ -32,6 +32,8 @@ public class SpriteObject extends AbstractGameObject {
         result.setPosX(posX);
         result.setPosY(posY);
         result.setRotation(rotation);
+        result.setScaleX(scaleX);
+        result.setScaleY(scaleY);
         return result;
     }
 }

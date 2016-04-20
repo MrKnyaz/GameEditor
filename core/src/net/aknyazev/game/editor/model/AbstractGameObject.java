@@ -11,7 +11,7 @@ public abstract class AbstractGameObject {
     private long id;
     protected float rotation;
     protected float posX, posY;
-    protected float scaleX, scaleY;
+    protected float scaleX = 1f, scaleY = 1f;
 
     public long getId() {
         return id;
