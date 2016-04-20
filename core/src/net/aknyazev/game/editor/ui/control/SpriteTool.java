@@ -27,9 +27,8 @@ public class SpriteTool extends AbstractTool {
             ui.previousRegion();
         }
         renderData.setDynamicItem(new SpriteObject(currentAtlas.getRegions()[currentAtlas.getCurrentRegion()]));
-        renderData.getDynamicItem().setPosX(Gdx.input.getX()/Constants.getPixelsPerUnit());
-        renderData.getDynamicItem().setPosY(Constants.getViewPortHeight() - Gdx.input.getY() / Constants.getPixelsPerUnit());
-
+        renderData.getDynamicItem().setPosX(renderData.getWorldX(Gdx.input.getX()));
+        renderData.getDynamicItem().setPosY(renderData.getWorldY(Gdx.input.getY()));
     }
 
     @Override
