@@ -35,16 +35,12 @@ public class SpriteTool extends AbstractTool {
     @Override
     public void attachToMouse(int x, int y) {
         if (renderData.getDynamicItem() != null) {
-            System.out.println("POS X: "+renderData.getWorldX(x));
-            System.out.println("POS Y: "+renderData.getWorldY(y));
             renderData.getDynamicItem().setPosX(renderData.getWorldX(x));
             renderData.getDynamicItem().setPosY(renderData.getWorldY(y));
         }
     }
 
     public Command submit(int screenX, int screenY) {
-        System.out.println("CURRENT LAYER: "+renderData.getLayers()[renderData.getCurrentLayer()].getSpeed());
-        System.out.println("POS CAMERA: "+Constants.cam.position);
         System.out.println(renderData.getDynamicItem());
         //renderData.getLayers()[0].getItems().add(renderData.getDynamicItem().copy());
         return renderData.addItem(renderData.getDynamicItem().copy());

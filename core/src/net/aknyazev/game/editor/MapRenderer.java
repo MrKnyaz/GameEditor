@@ -20,12 +20,12 @@ public class MapRenderer {
     }
 
     public void render(SpriteBatch batch, float delta) {
-        Layer[] layers = renderData.getLayers();
+        List<Layer> layers = renderData.getLayers();
         OrthographicCamera cam = Constants.cam;
         float camStandartPosX = cam.position.x;
         float camStandartPosY = cam.position.y;
-        for (int i = 0; i < layers.length; i++) {
-            Layer layer = layers[i];
+        for (int i = layers.size()-1; i >= 0; i--) {
+            Layer layer = layers.get(i);
             cam.position.x = Constants.getViewPortWidth()/2+(camStandartPosX-Constants.getViewPortWidth()/2)*layer.getSpeed();
             cam.position.y = Constants.getViewPortHeight()/2+(camStandartPosY-Constants.getViewPortHeight()/2)*layer.getSpeed();
             cam.update();

@@ -8,6 +8,9 @@ import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.ui.command.AddCommand;
 import net.aknyazev.game.editor.ui.command.Command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Author: MrKnyaz
  * Date: 23.12.13
@@ -16,16 +19,14 @@ public class RenderData {
 
     public long size;
 
-    private Layer[] layers;
+    private ArrayList<Layer> layers;
     private boolean allLayers = true;
     private int currentLayer;
     private AbstractGameObject dynamicItem;
 
     public RenderData() {
-        layers = new Layer[2];
-        layers[0] = new Layer("testLayer");
-        layers[1] = new Layer("testLayer1");
-        layers[0].setSpeed(0.2f);
+        layers = new ArrayList<Layer>();
+        layers.add(new Layer("layer 1"));
     }
 
     public boolean isAllLayers() {
@@ -52,18 +53,13 @@ public class RenderData {
         this.dynamicItem = dynamicItem;
     }
 
-    public Layer[] getLayers() {
-
+    public ArrayList<Layer> getLayers() {
         return layers;
-    }
-
-    public void setLayers(Layer[] layers) {
-        this.layers = layers;
     }
 
     public Command addItem(AbstractGameObject item) {
         item.setId(size++);
-        return new AddCommand(item, layers[currentLayer]).execute();
+        return new AddCommand(item, layers.get(currentLayer)).execute();
     }
 
     public float getWorldX(int screenX) {
@@ -71,13 +67,13 @@ public class RenderData {
         //because of stupid middle-screen coordinates I moved camera by half of viewport at the beginning
         //So we apply speed to layer only after we subtract this half
         //This is done to have layers at the same position on start
-        return (camera.position.x-camera.viewportWidth/2)*layers[currentLayer].getSpeed()
+        return (camera.position.x-camera.viewportWidth/2)*layers.get(currentLayer).getSpeed()
                 +screenX / Constants.getPixelsPerUnit();
     }
 
     public float getWorldY(int screenY) {
         OrthographicCamera camera = Constants.cam;
-        return (camera.position.y-camera.viewportHeight/2)*layers[currentLayer].getSpeed()
+        return (camera.position.y-camera.viewportHeight/2)*layers.get(currentLayer).getSpeed()
                 +(Constants.getViewPortHeight()-screenY/Constants.getPixelsPerUnit());
     }
 }

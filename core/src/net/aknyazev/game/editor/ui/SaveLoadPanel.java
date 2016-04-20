@@ -36,7 +36,7 @@ public class SaveLoadPanel extends Table {
         add(saveMap).colspan(2).left();
 
         //Load image data
-        loadGraphics.addListener((new ClickListener() {
+        loadGraphics.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -46,7 +46,7 @@ public class SaveLoadPanel extends Table {
                 ui.regionSelect.setItems(ui.atlases[0].getRegions());
                 ui.renderData.setDynamicItem(null);
             }
-        }));
+        });
 
     }
 }
