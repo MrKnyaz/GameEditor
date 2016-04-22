@@ -16,7 +16,9 @@ public class SpriteObject extends AbstractGameObject {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(region, posX, posY, region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX, region.getRegionHeight()/Constants.PIXPERUNIT * scaleY);
+        float spriteWidth = region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX;
+        float spriteHeight = region.getRegionHeight()/Constants.PIXPERUNIT * scaleY;
+        batch.draw(region, posX-spriteWidth/2, posY-spriteHeight/2, spriteWidth, spriteHeight);
     }
 
     public TextureRegion getRegion() {
@@ -35,5 +37,9 @@ public class SpriteObject extends AbstractGameObject {
         result.setScaleX(scaleX);
         result.setScaleY(scaleY);
         return result;
+    }
+
+    public String toString() {
+        return region.toString();
     }
 }

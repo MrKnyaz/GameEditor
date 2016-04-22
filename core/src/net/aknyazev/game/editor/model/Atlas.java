@@ -11,30 +11,20 @@ public class Atlas {
 
     private String name;
     private Texture texture;
-    private TextureRegion[] regions;
-    private int currentRegion;
+    private SpriteObject[] spriteObjects;
+    private SpriteObject currentSprite;
 
     public Atlas(String name, Texture texture, TextureRegion[] regions) {
         this.name = name;
         this.texture = texture;
-        this.regions = regions;
+        spriteObjects = new SpriteObject[regions.length];
+        for (int i = 0; i < regions.length; i++) {
+            TextureRegion region = regions[i];
+            spriteObjects[i] = new SpriteObject(region);
+        }
+        currentSprite = spriteObjects[0];
     }
 
-    public void nextRegion() {
-        if (currentRegion < regions.length -1) {
-            currentRegion++;
-        } else {
-            currentRegion = 0;
-        }
-    }
-
-    public void previousRegion() {
-        if (currentRegion > 0) {
-            currentRegion--;
-        } else {
-            currentRegion = regions.length-1;
-        }
-    }
 
     public String getName() {
         return name;
@@ -52,20 +42,20 @@ public class Atlas {
         this.texture = texture;
     }
 
-    public TextureRegion[] getRegions() {
-        return regions;
+    public SpriteObject[] getSpriteObjects() {
+        return spriteObjects;
     }
 
-    public void setRegions(TextureRegion[] regions) {
-        this.regions = regions;
+    public void setSpriteObjects(SpriteObject[] spriteObjects) {
+        this.spriteObjects = spriteObjects;
     }
 
-    public int getCurrentRegion() {
-        return currentRegion;
+    public SpriteObject getCurrentSprite() {
+        return currentSprite;
     }
 
-    public void setCurrentRegion(int currentRegion) {
-        this.currentRegion = currentRegion;
+    public void setCurrentSprite(SpriteObject currentSprite) {
+        this.currentSprite = currentSprite;
     }
 
     @Override

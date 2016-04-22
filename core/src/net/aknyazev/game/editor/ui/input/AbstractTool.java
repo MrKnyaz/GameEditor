@@ -1,4 +1,4 @@
-package net.aknyazev.game.editor.ui.control;
+package net.aknyazev.game.editor.ui.input;
 
 
 import net.aknyazev.game.editor.model.AbstractGameObject;
@@ -53,5 +53,9 @@ abstract public class AbstractTool {
 
     public Command customKeyAction() {
         return null;
+    }
+
+    public RenderData getRenderData() {
+        return renderData;
     }
 }

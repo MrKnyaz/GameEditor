@@ -1,4 +1,4 @@
-package net.aknyazev.game.editor.ui.control;
+package net.aknyazev.game.editor.ui.input;
 
 
 import net.aknyazev.game.editor.world.RenderData;

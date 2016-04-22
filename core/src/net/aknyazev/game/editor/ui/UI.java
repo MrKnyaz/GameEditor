@@ -3,7 +3,6 @@ package net.aknyazev.game.editor.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -12,11 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.aknyazev.game.editor.model.Atlas;
+import net.aknyazev.game.editor.model.SpriteObject;
 import net.aknyazev.game.editor.model.UIData;
-import net.aknyazev.game.editor.ui.control.MapInputProcessor;
-import net.aknyazev.game.editor.ui.control.PhysicsRectangleTool;
-import net.aknyazev.game.editor.ui.control.SelectionTool;
-import net.aknyazev.game.editor.ui.control.SpriteTool;
+import net.aknyazev.game.editor.ui.input.MapInputProcessor;
+import net.aknyazev.game.editor.ui.input.PhysicsRectangleTool;
+import net.aknyazev.game.editor.ui.input.SelectionTool;
+import net.aknyazev.game.editor.ui.input.SpriteTool;
 import net.aknyazev.game.editor.world.RenderData;
 
 /**
@@ -30,9 +30,6 @@ public class UI {
     Skin skin;
 
     //data
-    SelectionTool selectionState;
-    SpriteTool drawingState;
-    PhysicsRectangleTool objectDrawingState;
     Atlas[] atlases;
     Atlas currentAtlas;
     UIData uiData;
@@ -43,17 +40,24 @@ public class UI {
     TextButton selectionToolButton;
     TextButton spriteToolButton;
     SelectBox<Atlas> atlasSelect;
-    SelectBox regionSelect;
+    SelectBox<SpriteObject> spriteSelect;
 
     TextButton physicsToolButton;
     SelectBox physicsSelect;
 
 
+    //controllers
+    SelectionTool selectionTool;
+    SpriteTool spriteTool;
+    PhysicsRectangleTool objectDrawingState;
+    UIController mainController;
+
     public UI(RenderData renderData) {
         this.renderData = renderData;
         this.uiData = new UIData();
-        selectionState = new SelectionTool(renderData, this);
-        drawingState = new SpriteTool(renderData, this);
+        mainController = new UIController(renderData, this);
+        selectionTool = new SelectionTool(renderData, this);
+        spriteTool = new SpriteTool(renderData, this);
         objectDrawingState = new PhysicsRectangleTool(renderData, this);
 
         stage = new Stage();
@@ -64,7 +68,7 @@ public class UI {
                 return false;
             }
         });
-        mapInputProcessor = new MapInputProcessor(drawingState);
+        mapInputProcessor = new MapInputProcessor(spriteTool);
         InputMultiplexer inputs = new InputMultiplexer();
         inputs.addProcessor(stage);
         inputs.addProcessor(mapInputProcessor);
@@ -86,7 +90,7 @@ public class UI {
 
         //Add ui
         atlasSelect = new SelectBox<Atlas>(skin);
-        regionSelect = new SelectBox<TextureRegion>(skin);
+        spriteSelect = new SelectBox<SpriteObject>(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
         spriteToolButton = new TextButton("Sprite Tool", skin);
@@ -100,7 +104,7 @@ public class UI {
         spriteToolTable.add(new Label("Atlas:", skin)).right();
         spriteToolTable.add(atlasSelect).left();
         spriteToolTable.add(new Label("Region:", skin)).right();
-        spriteToolTable.add(regionSelect).left();
+        spriteToolTable.add(spriteSelect).left();
         table.add(spriteToolTable).top();
 
         table.add(selectionToolButton).top().pad(5f);
@@ -116,8 +120,7 @@ public class UI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                mapInputProcessor.setState(selectionState);
-                renderData.setDynamicItem(null);
+                mapInputProcessor.setState(selectionTool);
                 updateButtonsColors();
             }
         });
@@ -125,8 +128,7 @@ public class UI {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                mapInputProcessor.setState(drawingState);
-                renderData.setDynamicItem(null);
+                mapInputProcessor.setState(spriteTool);
                 updateButtonsColors();
             }
         });
@@ -135,7 +137,6 @@ public class UI {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 mapInputProcessor.setState(objectDrawingState);
-                renderData.setDynamicItem(null);
                 updateButtonsColors();
             }
         });
@@ -146,10 +147,10 @@ public class UI {
             }
         });
         //Region selected event
-        regionSelect.addListener(new ChangeListener() {
+        spriteSelect.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                //System.out.println("region "+regionSelect.getSelectionIndex());
-                currentAtlas.setCurrentRegion(regionSelect.getSelectedIndex());
+                mainController.setDynamicItem(spriteSelect.getSelected());
+                spriteTool.attachToMouse(Gdx.input.getX(), Gdx.input.getY());
             }
         });
     }
@@ -199,9 +200,9 @@ public class UI {
         int currentAtlas = uiData.getCurrentAtlas();
         atlasSelect.setSelection(currentAtlas);
         TextureRegion[] regions = atlases[currentAtlas].getRegions();
-        int currentRegion = atlases[currentAtlas].getCurrentRegion();
-        regionSelect.setItems(regions);
-        regionSelect.setSelection(currentRegion);
+        int currentRegion = atlases[currentAtlas].getCurrentSprite();
+        spriteSelect.setItems(regions);
+        spriteSelect.setSelection(currentRegion);
     }*/
 
     public void dispose() {
@@ -220,13 +221,15 @@ public class UI {
         this.currentAtlas = currentAtlas;
     }
 
-    public void nextRegion() {
-        int currentIndex = regionSelect.getSelectedIndex();
-        regionSelect.setSelectedIndex(currentIndex < regionSelect.getItems().size - 1 ? currentIndex + 1 : 0);
+    public UIController getMainController() {
+        return mainController;
     }
 
-    public void previousRegion() {
-        int currentIndex = regionSelect.getSelectedIndex();
-        regionSelect.setSelectedIndex(currentIndex > 0 ? regionSelect.getSelectedIndex() - 1 : regionSelect.getItems().size - 1);
+    public SelectBox<SpriteObject> getSpriteSelect() {
+        return spriteSelect;
+    }
+
+    public SelectBox<Atlas> getAtlasSelect() {
+        return atlasSelect;
     }
 }

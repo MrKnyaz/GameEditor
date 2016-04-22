@@ -61,7 +61,7 @@ public abstract class AbstractGameObject {
         this.scaleY = scaleY;
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -75,7 +75,7 @@ public abstract class AbstractGameObject {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
-    }
+    }*/
 
     public abstract void draw(SpriteBatch batch);
 

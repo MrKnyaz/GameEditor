@@ -1,8 +1,8 @@
-package net.aknyazev.game.editor.ui.control;
+package net.aknyazev.game.editor.ui.input;
 
 
 import com.badlogic.gdx.Gdx;
-import net.aknyazev.game.editor.Constants;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import net.aknyazev.game.editor.model.*;
 import net.aknyazev.game.editor.ui.UI;
 import net.aknyazev.game.editor.ui.command.Command;
@@ -20,15 +20,14 @@ public class SpriteTool extends AbstractTool {
 
     @Override
     public void changeItem(int amount) {
-        Atlas currentAtlas = ui.getCurrentAtlas();
+        SelectBox<SpriteObject> spriteSelect = ui.getSpriteSelect();
         if (amount > 0) {
-            ui.nextRegion();
+            int currentIndex = spriteSelect.getSelectedIndex();
+            spriteSelect.setSelectedIndex(currentIndex < spriteSelect.getItems().size - 1 ? currentIndex + 1 : 0);
         } else {
-            ui.previousRegion();
+            int currentIndex = spriteSelect.getSelectedIndex();
+            spriteSelect.setSelectedIndex(currentIndex > 0 ? spriteSelect.getSelectedIndex() - 1 : spriteSelect.getItems().size - 1);
         }
-        renderData.setDynamicItem(new SpriteObject(currentAtlas.getRegions()[currentAtlas.getCurrentRegion()]));
-        renderData.getDynamicItem().setPosX(renderData.getWorldX(Gdx.input.getX()));
-        renderData.getDynamicItem().setPosY(renderData.getWorldY(Gdx.input.getY()));
     }
 
     @Override
@@ -40,8 +39,6 @@ public class SpriteTool extends AbstractTool {
     }
 
     public Command submit(int screenX, int screenY) {
-        System.out.println(renderData.getDynamicItem());
-        //renderData.getLayers()[0].getItems().add(renderData.getDynamicItem().copy());
         return renderData.addItem(renderData.getDynamicItem().copy());
     }
 }

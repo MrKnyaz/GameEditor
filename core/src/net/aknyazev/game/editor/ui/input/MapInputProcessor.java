@@ -1,10 +1,10 @@
-package net.aknyazev.game.editor.ui.control;
+package net.aknyazev.game.editor.ui.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.ui.command.Command;
+import net.aknyazev.game.editor.world.RenderData;
 
 import java.util.LinkedList;
 
@@ -57,7 +57,6 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println(screenX + " " + screenY);
         Command command = state.submit(screenX, screenY);
         if (command != null) {
             undoList.push(command);
@@ -83,18 +82,23 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int i) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
-            state.scale(i*0.1f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-            state.rotate(i);
-        } else {
-            state.changeItem(i);
+        try {
+            if (Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT)) {
+                state.scale(i*0.1f);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
+                state.rotate(i);
+            } else {
+                state.changeItem(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setState(AbstractTool state) {
         this.state = state;
+        state.getRenderData().setDynamicItem(null);
     }
     //For changing buttons view
     public AbstractTool getState() {

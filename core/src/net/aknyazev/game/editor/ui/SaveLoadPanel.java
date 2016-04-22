@@ -40,11 +40,7 @@ public class SaveLoadPanel extends Table {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                ui.atlases = FileUtils.loadFromPack("no path");
-                //update atlases
-                ui.atlasSelect.setItems(ui.atlases);
-                ui.regionSelect.setItems(ui.atlases[0].getRegions());
-                ui.renderData.setDynamicItem(null);
+                ui.getMainController().loadGraphics(pathToGraphics.getText());
             }
         });
 
