@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.aknyazev.game.editor.model.Layer;
+import net.aknyazev.game.editor.world.RenderData;
 
 import java.util.ArrayList;
 
@@ -14,18 +15,25 @@ import java.util.ArrayList;
  */
 public class LayerPanel extends Table {
 
+    RenderData renderData;
+
+    UIController mainController;
+
     SelectBox layerSelect, shadersSelect;
     CheckBox allLayersCheck, animatedCheck;
     TextField speedTF, nameTF;
     TextButton backButton, frontButton, saveButton, addNewButton;
 
 
-    public LayerPanel(final UI ui, Skin skin) {
+
+    public LayerPanel(final UI ui, final RenderData renderData, Skin skin) {
+        this.renderData = renderData;
+        this.mainController = ui.getMainController();
+
         layerSelect = new SelectBox(skin);
-        layerSelect.setItems(ui.renderData.getLayers().toArray());
         shadersSelect = new SelectBox(skin);
         allLayersCheck = new CheckBox("All layers", skin);
-        allLayersCheck.setChecked(ui.renderData.isAllLayers());
+        allLayersCheck.setChecked(renderData.isAllLayers());
         animatedCheck = new CheckBox("Animated", skin);
         speedTF = new TextField("", skin);
         nameTF = new TextField("", skin);
@@ -33,8 +41,8 @@ public class LayerPanel extends Table {
         frontButton = new TextButton("Front", skin);
         saveButton = new TextButton("Save", skin);
         addNewButton = new TextButton("Add New", skin);
-        Layer layer = ui.renderData.getLayers().get(ui.renderData.getCurrentLayer());
-        updateFields(layer);
+        updateLayersList();
+        updateFields();
 
         pad(5f);
         add(new Label("Layer:", skin)).right();
@@ -62,9 +70,7 @@ public class LayerPanel extends Table {
         layerSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("CHANGED");
-                ui.renderData.setCurrentLayer(layerSelect.getSelectedIndex());
-                updateFields(ui.renderData.getLayers().get(layerSelect.getSelectedIndex()));
+                mainController.setCurrentLayer(layerSelect.getSelectedIndex());
             }
         });
         addNewButton.addListener(new ClickListener() {
@@ -74,11 +80,8 @@ public class LayerPanel extends Table {
                 try {
                     Layer newLayer = new Layer(nameTF.getText());
                     newLayer.setSpeed(Float.parseFloat(speedTF.getText()));
-                    ArrayList<Layer> layers = ui.renderData.getLayers();
-                    layers.add(newLayer);
-                    //ui.renderData.setCurrentLayer(layers.size()-1);
-                    layerSelect.setItems(layers.toArray());
-                    layerSelect.setSelectedIndex(layers.size()-1);
+                    mainController.addNewLayer(newLayer);
+                    layerSelect.setSelectedIndex(renderData.getLayers().size() - 1);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -87,36 +90,25 @@ public class LayerPanel extends Table {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ArrayList<Layer> layers = ui.renderData.getLayers();
-                int currentLayer = ui.renderData.getCurrentLayer();
-                if (currentLayer < layers.size() - 1) {
-                    Layer tmpLayer = layers.get(currentLayer);
-                    layers.set(currentLayer, layers.get(currentLayer+1));
-                    layers.set(currentLayer+1, tmpLayer);
-                    ui.renderData.setCurrentLayer(++currentLayer);
-                    layerSelect.setItems(layers.toArray());
-                }
+                mainController.rearrangeLayer(+1);
             }
         });
         frontButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ArrayList<Layer> layers = ui.renderData.getLayers();
-                int currentLayer = ui.renderData.getCurrentLayer();
-                if (currentLayer > 0) {
-                    Layer tmpLayer = layers.get(currentLayer);
-                    layers.set(currentLayer, layers.get(currentLayer-1));
-                    layers.set(currentLayer-1, tmpLayer);
-                    ui.renderData.setCurrentLayer(--currentLayer);
-                    layerSelect.setItems(layers.toArray());
-                }
+                mainController.rearrangeLayer(-1);
             }
         });
 
     }
 
-    private void updateFields(Layer layer) {
+    public void updateFields() {
+        Layer layer = renderData.getLayers().get(renderData.getCurrentLayer());
         nameTF.setText(layer.toString());
         speedTF.setText(Float.toString(layer.getSpeed()));
+    }
+
+    public void updateLayersList() {
+        layerSelect.setItems(renderData.getLayers().toArray());
     }
 }

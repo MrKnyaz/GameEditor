@@ -30,8 +30,6 @@ public class UI {
     Skin skin;
 
     //data
-    Atlas[] atlases;
-    Atlas currentAtlas;
     UIData uiData;
     RenderData renderData;
 
@@ -45,6 +43,9 @@ public class UI {
     TextButton physicsToolButton;
     SelectBox physicsSelect;
 
+    SaveLoadPanel saveLoadPanel;
+    LayerPanel layerPanel;
+
 
     //controllers
     SelectionTool selectionTool;
@@ -55,7 +56,7 @@ public class UI {
     public UI(RenderData renderData) {
         this.renderData = renderData;
         this.uiData = new UIData();
-        mainController = new UIController(renderData, this);
+        mainController = new UIController(renderData, uiData, this);
         selectionTool = new SelectionTool(renderData, this);
         spriteTool = new SpriteTool(renderData, this);
         objectDrawingState = new PhysicsRectangleTool(renderData, this);
@@ -96,7 +97,7 @@ public class UI {
         spriteToolButton = new TextButton("Sprite Tool", skin);
         physicsToolButton = new TextButton("Physics Tool", skin);
 
-        table.add(new SaveLoadPanel(this, skin)).top();
+        table.add(saveLoadPanel = new SaveLoadPanel(this, skin)).top();
         //sprite tool layout
         Table spriteToolTable = new Table().pad(5f);
         spriteToolTable.add(spriteToolButton).colspan(2).left();
@@ -110,7 +111,7 @@ public class UI {
         table.add(selectionToolButton).top().pad(5f);
         table.add(physicsToolButton).top().pad(5f);
 
-        table.add(new LayerPanel(this, skin)).top();
+        table.add(layerPanel = new LayerPanel(this, renderData, skin)).top();
 
     }
 
@@ -143,7 +144,7 @@ public class UI {
         //Atlas selected event
         atlasSelect.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                currentAtlas = atlasSelect.getSelected();
+                mainController.setCurrentAtlas(atlasSelect.getSelected());
             }
         });
         //Region selected event
@@ -194,6 +195,22 @@ public class UI {
             physicsToolButton.setColor(1, 1, 1, 1);
         }
     }
+
+    public void updateAtlases() {
+        atlasSelect.setItems(uiData.getAtlases());
+    }
+
+    public void updateSpritesList() {
+        spriteSelect.setItems(uiData.getCurrentAtlas().getSpriteObjects());
+    }
+
+    public void updateLayerInfo() {
+        layerPanel.updateFields();
+    }
+
+    public void updateLayersList() {
+        layerPanel.updateLayersList();
+    }
     /*public void updateFromModels() {
         Atlas[] atlases = uiData.getAtlases();
         atlasSelect.setItems(atlases);
@@ -207,18 +224,6 @@ public class UI {
 
     public void dispose() {
         stage.dispose();
-    }
-
-    Atlas[] getAtlases() {
-        return atlases;
-    }
-
-    public Atlas getCurrentAtlas() {
-        return currentAtlas;
-    }
-
-    public void setCurrentAtlas(Atlas currentAtlas) {
-        this.currentAtlas = currentAtlas;
     }
 
     public UIController getMainController() {

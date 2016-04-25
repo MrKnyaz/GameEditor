@@ -18,7 +18,7 @@ import java.util.List;
  * Date: 1/10/14
  */
 public class FileUtils {
-    public static void loadFromBraid(UIData data) {
+    /*public static void loadFromBraid(UIData data) {
         Texture texture = new Texture("data/pieces/c3_page_0.jpg");
         TextureRegion[] regions = new TextureRegion[texture.getHeight()/128*texture.getWidth()/128];
         for (int y = 0; y < texture.getHeight()/128; y++) {
@@ -32,7 +32,7 @@ public class FileUtils {
         atlases[0] = atlas;
         data.setAtlases(atlases);
         data.setCurrentAtlas(0);
-    }
+    }*/
 
     public static Atlas[] loadFromPack(String path) {
         TextureAtlas atlas;

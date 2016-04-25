@@ -9,7 +9,7 @@ public class UIData {
 
     private Atlas[] atlases;
     private int state;
-    private int currentAtlas;
+    private Atlas currentAtlas;
 
     public UIData() {
         atlases = new Atlas[1];
@@ -31,11 +31,11 @@ public class UIData {
         this.state = state;
     }
 
-    public int getCurrentAtlas() {
+    public Atlas getCurrentAtlas() {
         return currentAtlas;
     }
 
-    public void setCurrentAtlas(int currentAtlas) {
+    public void setCurrentAtlas(Atlas currentAtlas) {
         this.currentAtlas = currentAtlas;
     }
 }
