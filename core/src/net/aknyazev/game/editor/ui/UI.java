@@ -3,6 +3,8 @@ package net.aknyazev.game.editor.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -37,7 +39,6 @@ public class UI {
     //ui
     TextButton selectionToolButton;
     TextButton spriteToolButton;
-    SelectBox<Atlas> atlasSelect;
     SelectBox<SpriteObject> spriteSelect;
 
     TextButton physicsToolButton;
@@ -90,8 +91,7 @@ public class UI {
         //table.debug();
 
         //Add ui
-        atlasSelect = new SelectBox<Atlas>(skin);
-        spriteSelect = new SelectBox<SpriteObject>(skin);
+        spriteSelect = new SelectBox(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
         spriteToolButton = new TextButton("Sprite Tool", skin);
@@ -102,9 +102,7 @@ public class UI {
         Table spriteToolTable = new Table().pad(5f);
         spriteToolTable.add(spriteToolButton).colspan(2).left();
         spriteToolTable.row();
-        spriteToolTable.add(new Label("Atlas:", skin)).right();
-        spriteToolTable.add(atlasSelect).left();
-        spriteToolTable.add(new Label("Region:", skin)).right();
+        spriteToolTable.add(new Label("Sprite:", skin)).right();
         spriteToolTable.add(spriteSelect).left();
         table.add(spriteToolTable).top();
 
@@ -141,17 +139,10 @@ public class UI {
                 updateButtonsColors();
             }
         });
-        //Atlas selected event
-        atlasSelect.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-                mainController.setCurrentAtlas(atlasSelect.getSelected());
-            }
-        });
         //Region selected event
         spriteSelect.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 mainController.setDynamicItem(spriteSelect.getSelected());
-                spriteTool.attachToMouse(Gdx.input.getX(), Gdx.input.getY());
             }
         });
     }
@@ -196,12 +187,8 @@ public class UI {
         }
     }
 
-    public void updateAtlases() {
-        atlasSelect.setItems(uiData.getAtlases());
-    }
-
     public void updateSpritesList() {
-        spriteSelect.setItems(uiData.getCurrentAtlas().getSpriteObjects());
+        spriteSelect.setItems(uiData.getSpriteObjects());
     }
 
     public void updateLayerInfo() {
@@ -222,6 +209,14 @@ public class UI {
         spriteSelect.setSelection(currentRegion);
     }*/
 
+    public void nextSprite() {
+        int currentIndex = spriteSelect.getSelectedIndex();
+        spriteSelect.setSelectedIndex(currentIndex < spriteSelect.getItems().size - 1 ? currentIndex + 1 : 0);
+    }
+    public void previousSprite() {
+        int currentIndex = spriteSelect.getSelectedIndex();
+        spriteSelect.setSelectedIndex(currentIndex > 0 ? spriteSelect.getSelectedIndex() - 1 : spriteSelect.getItems().size - 1);
+    }
     public void dispose() {
         stage.dispose();
     }
@@ -230,11 +225,4 @@ public class UI {
         return mainController;
     }
 
-    public SelectBox<SpriteObject> getSpriteSelect() {
-        return spriteSelect;
-    }
-
-    public SelectBox<Atlas> getAtlasSelect() {
-        return atlasSelect;
-    }
 }

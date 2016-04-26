@@ -20,14 +20,12 @@ public class SpriteTool extends AbstractTool {
 
     @Override
     public void changeItem(int amount) {
-        SelectBox<SpriteObject> spriteSelect = ui.getSpriteSelect();
         if (amount > 0) {
-            int currentIndex = spriteSelect.getSelectedIndex();
-            spriteSelect.setSelectedIndex(currentIndex < spriteSelect.getItems().size - 1 ? currentIndex + 1 : 0);
+            ui.nextSprite();
         } else {
-            int currentIndex = spriteSelect.getSelectedIndex();
-            spriteSelect.setSelectedIndex(currentIndex > 0 ? spriteSelect.getSelectedIndex() - 1 : spriteSelect.getItems().size - 1);
+            ui.previousSprite();
         }
+        attachToMouse(Gdx.input.getX(), Gdx.input.getY());
     }
 
     @Override

@@ -33,10 +33,13 @@ public class FileUtils {
         data.setAtlases(atlases);
         data.setCurrentAtlas(0);
     }*/
+    public static TextureAtlas loadAtlas(String path) {
+        return new TextureAtlas(Gdx.files.internal("packs/test1.pack"));
+    }
 
     public static Atlas[] loadFromPack(String path) {
         TextureAtlas atlas;
-        atlas = new TextureAtlas(Gdx.files.internal("packs/2dforest.pack"));
+        atlas = new TextureAtlas(Gdx.files.internal("packs/test1.pack"));
         Array<TextureAtlas.AtlasRegion> regions = atlas.getRegions();
 
         TextureRegion[] textureRegions = new TextureRegion[regions.size];

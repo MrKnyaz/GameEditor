@@ -20,7 +20,7 @@ public class Atlas {
         spriteObjects = new SpriteObject[regions.length];
         for (int i = 0; i < regions.length; i++) {
             TextureRegion region = regions[i];
-            spriteObjects[i] = new SpriteObject(region);
+            //spriteObjects[i] = new SpriteObject(region);
         }
         currentSprite = spriteObjects[0];
     }

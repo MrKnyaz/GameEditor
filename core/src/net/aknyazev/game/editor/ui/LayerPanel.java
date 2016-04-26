@@ -19,7 +19,7 @@ public class LayerPanel extends Table {
 
     UIController mainController;
 
-    SelectBox layerSelect, shadersSelect;
+    SelectBox layerSelect, shaderSelect;
     CheckBox allLayersCheck, animatedCheck;
     TextField speedTF, nameTF;
     TextButton backButton, frontButton, saveButton, addNewButton;
@@ -31,7 +31,7 @@ public class LayerPanel extends Table {
         this.mainController = ui.getMainController();
 
         layerSelect = new SelectBox(skin);
-        shadersSelect = new SelectBox(skin);
+        shaderSelect = new SelectBox(skin);
         allLayersCheck = new CheckBox("All layers", skin);
         allLayersCheck.setChecked(renderData.isAllLayers());
         animatedCheck = new CheckBox("Animated", skin);
@@ -56,7 +56,7 @@ public class LayerPanel extends Table {
         add(new Label("Speed:", skin)).right();
         add(speedTF).left();
         add(new Label("Shader:", skin)).right();
-        add(shadersSelect).left();
+        add(shaderSelect).left();
         row();
         add(new Label("Order:", skin)).right().colspan(2);
         add(backButton).left();
@@ -64,7 +64,6 @@ public class LayerPanel extends Table {
         row();
         add(saveButton).left();
         add(addNewButton).left().colspan(3);
-
 
         //actions
         layerSelect.addListener(new ChangeListener() {

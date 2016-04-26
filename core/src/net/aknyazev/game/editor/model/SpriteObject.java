@@ -10,9 +10,11 @@ import net.aknyazev.game.editor.Constants;
  */
 public class SpriteObject extends AbstractGameObject {
     TextureRegion region;
+    String name;
 
-    public SpriteObject(TextureRegion region) {
+    public SpriteObject(TextureRegion region, String name) {
         this.region = region;
+        this.name = name;
     }
 
     public void draw(SpriteBatch batch) {
@@ -30,7 +32,7 @@ public class SpriteObject extends AbstractGameObject {
     }
 
     public SpriteObject copy() {
-        SpriteObject result = new SpriteObject(region);
+        SpriteObject result = new SpriteObject(region, name);
         result.setPosX(posX);
         result.setPosY(posY);
         result.setRotation(rotation);

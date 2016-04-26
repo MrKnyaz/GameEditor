@@ -27,16 +27,9 @@ public class UIController {
     }
 
     public void loadGraphics(String path) {
-        uiData.setAtlases(FileUtils.loadFromPack(path));
-        ui.updateAtlases();
-        setCurrentAtlas(uiData.getAtlases()[0]);
-        //update atlases
-        renderData.setDynamicItem(null);
-    }
-
-    public void setCurrentAtlas(Atlas atlas) {
-        uiData.setCurrentAtlas(atlas);
+        uiData.setTextureAtlas(FileUtils.loadAtlas(path));
         ui.updateSpritesList();
+        renderData.setDynamicItem(null);
     }
 
     public void setCurrentLayer(int index) {
