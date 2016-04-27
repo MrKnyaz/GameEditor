@@ -39,6 +39,8 @@ public class AssetManager {
         }
         return result;
     }
+
+
     public void dispose() {
         manager = null;
         if (atlases != null) {

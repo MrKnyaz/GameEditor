@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import net.aknyazev.game.editor.Constants;
 import net.aknyazev.game.editor.MapRenderer;
+import net.aknyazev.game.editor.assets.AssetManager;
 import net.aknyazev.game.editor.world.RenderData;
 import net.aknyazev.game.editor.ui.UI;
 
@@ -15,10 +16,12 @@ public class PlatformerMapEditor extends ApplicationAdapter {
 	UI ui;
 	MapRenderer mapRenderer;
 	SpriteBatch batch;
+	AssetManager assetManager;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		assetManager = AssetManager.getInstance();
 		RenderData renderData = new RenderData();
 		ui = new UI(renderData);
 		mapRenderer = new MapRenderer(renderData);
@@ -80,5 +83,6 @@ public class PlatformerMapEditor extends ApplicationAdapter {
 	@Override
 	public void dispose() {
 		ui.dispose();
+		assetManager.dispose();
 	}
 }
