@@ -21,12 +21,16 @@ public class AssetManager {
     }
 
     public static AssetManager getInstance() {
-        if (manager == null) {
-            manager = new AssetManager("packs");
-        }
-        return manager;
+        return getInstance("packs", false);
     }
 
+    public static AssetManager getInstance(String path, boolean reload) {
+        if (manager == null || reload) {
+            manager = new AssetManager(path);
+        }
+        return manager;
+
+    }
     public Atlas[] getAtlasArray() {
         Atlas[] result = new Atlas[atlases.size()];
         int index = 0;
