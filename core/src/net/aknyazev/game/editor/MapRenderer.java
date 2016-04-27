@@ -28,6 +28,7 @@ public class MapRenderer {
         float camStandartPosY = cam.position.y;
         AssetManager assetManager = AssetManager.getInstance();
         AbstractShader lastShader = assetManager.getDefaultShader();
+        assetManager.getDefaultShader().apply(batch, renderData);
         for (int i = layers.size()-1; i >= 0; i--) {
             Layer layer = layers.get(i);
             AbstractShader layerShader = layer.getShader();

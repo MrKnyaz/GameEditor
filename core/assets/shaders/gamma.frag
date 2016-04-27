@@ -5,6 +5,7 @@ uniform sampler2D u_texture;
 varying vec4 v_color;
 varying vec2 v_texCoords;
 varying float v_gamma;
+varying vec4 v_position;
 
 void main() {
 	//sample the texture
