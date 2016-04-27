@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import net.aknyazev.game.editor.assets.AssetManager;
 import net.aknyazev.game.editor.model.Atlas;
 import net.aknyazev.game.editor.model.SpriteObject;
 import net.aknyazev.game.editor.model.UIData;
@@ -39,6 +40,7 @@ public class UI {
     //ui
     TextButton selectionToolButton;
     TextButton spriteToolButton;
+    SelectBox<Atlas> atlasSelect;
     SelectBox<SpriteObject> spriteSelect;
 
     TextButton physicsToolButton;
@@ -81,6 +83,7 @@ public class UI {
         initUIElements();
         addControl();
         updateUI();
+        updateAtlasList();
     }
 
     private void initUIElements() {
@@ -91,6 +94,8 @@ public class UI {
         //table.debug();
 
         //Add ui
+        atlasSelect = new SelectBox(skin);
+        atlasSelect.setSize(1000f, 10f);
         spriteSelect = new SelectBox(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
@@ -102,6 +107,8 @@ public class UI {
         Table spriteToolTable = new Table().pad(5f);
         spriteToolTable.add(spriteToolButton).colspan(2).left();
         spriteToolTable.row();
+        spriteToolTable.add(new Label("Atlas:", skin)).right();
+        spriteToolTable.add(atlasSelect).left();
         spriteToolTable.add(new Label("Sprite:", skin)).right();
         spriteToolTable.add(spriteSelect).left();
         table.add(spriteToolTable).top();
@@ -137,6 +144,12 @@ public class UI {
                 super.clicked(event, x, y);
                 mapInputProcessor.setState(objectDrawingState);
                 updateButtonsColors();
+            }
+        });
+        //atlas selected event
+        atlasSelect.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                updateSpritesList();
             }
         });
         //Region selected event
@@ -187,8 +200,13 @@ public class UI {
         }
     }
 
+    public void updateAtlasList() {
+        atlasSelect.setItems(AssetManager.getInstance().getAtlasArray());
+        updateSpritesList();
+    }
     public void updateSpritesList() {
-        spriteSelect.setItems(uiData.getSpriteObjects());
+        Atlas atlas = atlasSelect.getSelected();
+        spriteSelect.setItems(uiData.getSpriteObjects(atlas));
     }
 
     public void updateLayerInfo() {

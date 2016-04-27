@@ -1,6 +1,5 @@
 package net.aknyazev.game.editor.ui;
 
-import com.badlogic.gdx.Gdx;
 import net.aknyazev.game.editor.model.*;
 import net.aknyazev.game.editor.util.FileUtils;
 import net.aknyazev.game.editor.world.RenderData;
@@ -24,12 +23,6 @@ public class UIController {
 
     public void setDynamicItem(AbstractGameObject gameObject) {
         renderData.setDynamicItem(gameObject);
-    }
-
-    public void loadGraphics(String path) {
-        uiData.setTextureAtlas(FileUtils.loadAtlas(path));
-        ui.updateSpritesList();
-        renderData.setDynamicItem(null);
     }
 
     public void setCurrentLayer(int index) {

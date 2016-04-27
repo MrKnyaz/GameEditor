@@ -10,10 +10,12 @@ import net.aknyazev.game.editor.Constants;
  */
 public class SpriteObject extends AbstractGameObject {
     TextureRegion region;
+    String atlasName;
     String name;
 
-    public SpriteObject(TextureRegion region, String name) {
+    public SpriteObject(String atlasName, String name, TextureRegion region) {
         this.region = region;
+        this.atlasName = atlasName;
         this.name = name;
     }
 
@@ -32,7 +34,7 @@ public class SpriteObject extends AbstractGameObject {
     }
 
     public SpriteObject copy() {
-        SpriteObject result = new SpriteObject(region, name);
+        SpriteObject result = new SpriteObject(atlasName, name, region);
         result.setPosX(posX);
         result.setPosY(posY);
         result.setRotation(rotation);

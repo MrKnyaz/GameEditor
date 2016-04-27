@@ -1,7 +1,5 @@
 package net.aknyazev.game.editor.model;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 
@@ -11,22 +9,12 @@ import com.badlogic.gdx.utils.Array;
  */
 public class UIData {
 
-    TextureAtlas textureAtlas;
-
-    public TextureAtlas getTextureAtlas() {
-        return textureAtlas;
-    }
-
-    public void setTextureAtlas(TextureAtlas textureAtlas) {
-        this.textureAtlas = textureAtlas;
-    }
-
-    public SpriteObject[] getSpriteObjects() {
-        Array<TextureAtlas.AtlasRegion> regionArray = textureAtlas.getRegions();
+    public SpriteObject[] getSpriteObjects(Atlas currentAtlas) {
+        Array<TextureAtlas.AtlasRegion> regionArray = currentAtlas.getTextureAtlas().getRegions();
         SpriteObject[] result = new SpriteObject[regionArray.size];
         int i = 0;
         for (TextureAtlas.AtlasRegion region: regionArray) {
-            result[i++] = new SpriteObject(region, region.name);
+            result[i++] = new SpriteObject(currentAtlas.getName(), region.name, region);
         }
         return result;
     }

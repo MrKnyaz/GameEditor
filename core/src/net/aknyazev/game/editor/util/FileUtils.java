@@ -10,7 +10,9 @@ import com.badlogic.gdx.utils.Array;
 import net.aknyazev.game.editor.model.Atlas;
 import net.aknyazev.game.editor.model.UIData;
 
+import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,11 +35,21 @@ public class FileUtils {
         data.setAtlases(atlases);
         data.setCurrentAtlas(0);
     }*/
-    public static TextureAtlas loadAtlas(String path) {
-        return new TextureAtlas(Gdx.files.internal("packs/test1.pack"));
+    public static HashMap<String, Atlas> loadAtlas(String path) {
+        HashMap<String, Atlas> result = new HashMap();
+        File dir = new File(path);
+        for (File file: dir.listFiles()) {
+            String filename = file.getName().split("\\.")[0];
+            String extension = file.getName().split("\\.")[1];
+            if (extension.equalsIgnoreCase("pack")) {
+                result.put(filename, new Atlas(filename, new TextureAtlas(Gdx.files.internal(path+"/"+file.getName()))));
+            }
+            //if (file.getName())
+        }
+        return result;
     }
 
-    public static Atlas[] loadFromPack(String path) {
+    /*public static Atlas[] loadFromPack(String path) {
         TextureAtlas atlas;
         atlas = new TextureAtlas(Gdx.files.internal("packs/test1.pack"));
         Array<TextureAtlas.AtlasRegion> regions = atlas.getRegions();
@@ -54,5 +66,5 @@ public class FileUtils {
         return atlases;
         //Sprite sprite = atlas.createSprite("otherimagename");
         //NinePatch patch = atlas.createPatch("patchimagename");
-    }
+    }*/
 }

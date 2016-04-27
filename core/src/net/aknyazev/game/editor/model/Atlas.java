@@ -1,6 +1,7 @@
 package net.aknyazev.game.editor.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -10,19 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Atlas {
 
     private String name;
-    private Texture texture;
-    private SpriteObject[] spriteObjects;
-    private SpriteObject currentSprite;
+    TextureAtlas textureAtlas;
 
-    public Atlas(String name, Texture texture, TextureRegion[] regions) {
+    public Atlas(String name, TextureAtlas textureAtlas) {
         this.name = name;
-        this.texture = texture;
-        spriteObjects = new SpriteObject[regions.length];
-        for (int i = 0; i < regions.length; i++) {
-            TextureRegion region = regions[i];
-            //spriteObjects[i] = new SpriteObject(region);
-        }
-        currentSprite = spriteObjects[0];
+        this.textureAtlas = textureAtlas;
     }
 
 
@@ -34,30 +27,13 @@ public class Atlas {
         this.name = name;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public TextureAtlas getTextureAtlas() {
+        return textureAtlas;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    public void dispose() {
+        textureAtlas.dispose();
     }
-
-    public SpriteObject[] getSpriteObjects() {
-        return spriteObjects;
-    }
-
-    public void setSpriteObjects(SpriteObject[] spriteObjects) {
-        this.spriteObjects = spriteObjects;
-    }
-
-    public SpriteObject getCurrentSprite() {
-        return currentSprite;
-    }
-
-    public void setCurrentSprite(SpriteObject currentSprite) {
-        this.currentSprite = currentSprite;
-    }
-
     @Override
     public String toString() {
         return name;
