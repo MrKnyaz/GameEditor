@@ -1,19 +1,11 @@
 package net.aknyazev.game.editor.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
-import net.aknyazev.game.editor.model.Atlas;
-import net.aknyazev.game.editor.model.UIData;
+import net.aknyazev.game.editor.assets.Atlas;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Author: aknyazev@kkb.kz

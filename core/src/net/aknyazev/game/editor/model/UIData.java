@@ -2,6 +2,7 @@ package net.aknyazev.game.editor.model;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
+import net.aknyazev.game.editor.assets.Atlas;
 
 /**
  * User: MrKnyaz

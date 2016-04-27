@@ -1,4 +1,4 @@
-package net.aknyazev.game.editor.model;
+package net.aknyazev.game.editor.assets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

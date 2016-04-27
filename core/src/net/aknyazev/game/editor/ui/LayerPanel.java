@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import net.aknyazev.game.editor.assets.AssetManager;
+import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.world.RenderData;
 
@@ -19,7 +21,8 @@ public class LayerPanel extends Table {
 
     UIController mainController;
 
-    SelectBox layerSelect, shaderSelect;
+    SelectBox layerSelect;
+    SelectBox shaderSelect;
     CheckBox allLayersCheck, animatedCheck;
     TextField speedTF, nameTF;
     TextButton backButton, frontButton, saveButton, addNewButton;
@@ -41,6 +44,7 @@ public class LayerPanel extends Table {
         frontButton = new TextButton("Front", skin);
         saveButton = new TextButton("Save", skin);
         addNewButton = new TextButton("Add New", skin);
+        updateShadersList();
         updateLayersList();
         updateFields();
 
@@ -79,6 +83,7 @@ public class LayerPanel extends Table {
                 try {
                     Layer newLayer = new Layer(nameTF.getText());
                     newLayer.setSpeed(Float.parseFloat(speedTF.getText()));
+                    newLayer.setShader((AbstractShader)shaderSelect.getSelected());
                     mainController.addNewLayer(newLayer);
                     layerSelect.setSelectedIndex(renderData.getLayers().size() - 1);
                 } catch (Exception e) {
@@ -101,10 +106,15 @@ public class LayerPanel extends Table {
 
     }
 
+    public void updateShadersList() {
+        AssetManager assetManager = AssetManager.getInstance();
+        shaderSelect.setItems(assetManager.getShaders().toArray());
+    }
     public void updateFields() {
         Layer layer = renderData.getLayers().get(renderData.getCurrentLayer());
         nameTF.setText(layer.toString());
         speedTF.setText(Float.toString(layer.getSpeed()));
+        shaderSelect.setSelected(layer.getShader());
     }
 
     public void updateLayersList() {

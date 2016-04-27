@@ -2,6 +2,8 @@ package net.aknyazev.game.editor;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import net.aknyazev.game.editor.assets.AssetManager;
+import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.model.AbstractGameObject;
 import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.world.RenderData;
@@ -24,8 +26,15 @@ public class MapRenderer {
         OrthographicCamera cam = Constants.cam;
         float camStandartPosX = cam.position.x;
         float camStandartPosY = cam.position.y;
+        AssetManager assetManager = AssetManager.getInstance();
+        AbstractShader lastShader = assetManager.getDefaultShader();
         for (int i = layers.size()-1; i >= 0; i--) {
             Layer layer = layers.get(i);
+            AbstractShader layerShader = layer.getShader();
+            if (!lastShader.equals(layerShader)) {
+                layerShader.apply(batch, renderData);
+                lastShader = layerShader;
+            }
             cam.position.x = Constants.getViewPortWidth()/2+(camStandartPosX-Constants.getViewPortWidth()/2)*layer.getSpeed();
             cam.position.y = Constants.getViewPortHeight()/2+(camStandartPosY-Constants.getViewPortHeight()/2)*layer.getSpeed();
             cam.update();

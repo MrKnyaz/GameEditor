@@ -1,9 +1,11 @@
 package net.aknyazev.game.editor.assets;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import net.aknyazev.game.editor.model.Atlas;
+import net.aknyazev.game.editor.assets.shaders.AbstractShader;
+import net.aknyazev.game.editor.assets.shaders.DefaultShader;
+import net.aknyazev.game.editor.assets.shaders.GammaShader;
 import net.aknyazev.game.editor.util.FileUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +18,16 @@ public class AssetManager {
 
     Map<String, Atlas> atlases;
 
+    DefaultShader defaultShader;
+    List<AbstractShader> shaders = new ArrayList<AbstractShader>();
+
     private  AssetManager(String path) {
         atlases = FileUtils.loadAtlas(path);
+        defaultShader = new DefaultShader("default");
+        shaders.add(defaultShader);
+        shaders.add(new GammaShader("slightly_dark", 55f));
+        shaders.add(new GammaShader("medium_dark", 30f));
+        shaders.add(new GammaShader("very_dark", 10f));
     }
 
     public static AssetManager getInstance() {
@@ -40,6 +50,13 @@ public class AssetManager {
         return result;
     }
 
+    public DefaultShader getDefaultShader() {
+        return defaultShader;
+    }
+
+    public List<AbstractShader> getShaders() {
+        return shaders;
+    }
 
     public void dispose() {
         manager = null;
