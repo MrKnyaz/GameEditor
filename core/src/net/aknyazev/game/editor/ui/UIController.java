@@ -1,5 +1,6 @@
 package net.aknyazev.game.editor.ui;
 
+import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.model.*;
 import net.aknyazev.game.editor.util.FileUtils;
 import net.aknyazev.game.editor.world.RenderData;
@@ -43,10 +44,18 @@ public class UIController {
 
     }
 
-    public void addNewLayer(Layer layer) {
-        ArrayList<Layer> layers = renderData.getLayers();
-        layers.add(layer);
-        ui.updateLayersList();
+    public void saveOrUpdateLayer(String name, String speed, AbstractShader shader, boolean looped, Layer layer) {
+        try {
+            if (layer == null) {
+                ArrayList<Layer> layers = renderData.getLayers();
+                layer = new Layer(name);
+                layers.add(layer);
+                ui.updateLayersList();
+            }
+            layer.setName(name);
+            layer.setSpeed(Float.parseFloat(speed));
+            layer.setShader(shader);
+        } catch(Exception e) {}
     }
 
 }

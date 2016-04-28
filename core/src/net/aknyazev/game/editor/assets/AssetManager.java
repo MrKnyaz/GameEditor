@@ -25,9 +25,8 @@ public class AssetManager {
         atlases = FileUtils.loadAtlas(path);
         defaultShader = new DefaultShader("default");
         shaders.add(defaultShader);
-        shaders.add(new GammaShader("slightly_dark", 55f));
         shaders.add(new GammaShader("medium_dark", 30f));
-        shaders.add(new GammaShader("very_dark", 10f));
+        shaders.add(new GammaShader("very_dark", 5f));
     }
 
     public static AssetManager getInstance() {

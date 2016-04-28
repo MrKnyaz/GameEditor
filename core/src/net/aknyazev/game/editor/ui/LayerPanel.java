@@ -25,7 +25,7 @@ public class LayerPanel extends Table {
     SelectBox shaderSelect;
     CheckBox allLayersCheck, animatedCheck;
     TextField speedTF, nameTF;
-    TextButton backButton, frontButton, saveButton, addNewButton;
+    TextButton backButton, frontButton, updateButton, addNewButton;
 
 
 
@@ -42,7 +42,7 @@ public class LayerPanel extends Table {
         nameTF = new TextField("", skin);
         backButton = new TextButton("Back", skin);
         frontButton = new TextButton("Front", skin);
-        saveButton = new TextButton("Save", skin);
+        updateButton = new TextButton("Update", skin);
         addNewButton = new TextButton("Add New", skin);
         updateShadersList();
         updateLayersList();
@@ -66,7 +66,7 @@ public class LayerPanel extends Table {
         add(backButton).left();
         add(frontButton).left();
         row();
-        add(saveButton).left();
+        add(updateButton).left();
         add(addNewButton).left().colspan(3);
 
         //actions
@@ -80,15 +80,15 @@ public class LayerPanel extends Table {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                try {
-                    Layer newLayer = new Layer(nameTF.getText());
-                    newLayer.setSpeed(Float.parseFloat(speedTF.getText()));
-                    newLayer.setShader((AbstractShader)shaderSelect.getSelected());
-                    mainController.addNewLayer(newLayer);
-                    layerSelect.setSelectedIndex(renderData.getLayers().size() - 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                mainController.saveOrUpdateLayer(nameTF.getText(), speedTF.getText(), (AbstractShader) shaderSelect.getSelected(), false, null);
+                layerSelect.setSelectedIndex(renderData.getLayers().size() - 1);
+            }
+        });
+        updateButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                mainController.saveOrUpdateLayer(nameTF.getText(), speedTF.getText(), (AbstractShader)shaderSelect.getSelected(), false, (Layer)layerSelect.getSelected());
             }
         });
         backButton.addListener(new ClickListener() {
