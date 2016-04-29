@@ -153,7 +153,7 @@ public class UI {
         //Region selected event
         spriteSelect.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                mainController.setDynamicItem(spriteSelect.getSelected());
+                mainController.setDynamicItem(new SpriteObject(spriteSelect.getSelected()));
             }
         });
     }
