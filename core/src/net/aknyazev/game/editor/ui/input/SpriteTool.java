@@ -37,6 +37,6 @@ public class SpriteTool extends AbstractTool {
     }
 
     public Command submit(int screenX, int screenY) {
-        return renderData.addItem(renderData.getDynamicItem().copy());
+        return renderData.addItem(new SpriteObject((SpriteObject)renderData.getDynamicItem()));
     }
 }

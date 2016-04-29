@@ -11,12 +11,19 @@ import net.aknyazev.game.editor.Constants;
 public class SpriteObject extends AbstractGameObject {
     TextureRegion region;
     String atlasName;
-    String name;
+    String regionName;
 
-    public SpriteObject(String atlasName, String name, TextureRegion region) {
+    public SpriteObject(String atlasName, String regionName, TextureRegion region) {
         this.region = region;
         this.atlasName = atlasName;
-        this.name = name;
+        this.regionName = regionName;
+    }
+
+    public SpriteObject(SpriteObject gameObject) {
+        super(gameObject);
+        this.region = gameObject.region;
+        this.atlasName = gameObject.atlasName;
+        this.regionName = gameObject.regionName;
     }
 
     public void draw(SpriteBatch batch) {
@@ -31,16 +38,6 @@ public class SpriteObject extends AbstractGameObject {
 
     public void setRegion(TextureRegion region) {
         this.region = region;
-    }
-
-    public SpriteObject copy() {
-        SpriteObject result = new SpriteObject(atlasName, name, region);
-        result.setPosX(posX);
-        result.setPosY(posY);
-        result.setRotation(rotation);
-        result.setScaleX(scaleX);
-        result.setScaleY(scaleY);
-        return result;
     }
 
     public String toString() {

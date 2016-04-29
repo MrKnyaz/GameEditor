@@ -23,7 +23,6 @@ abstract public class AbstractTool {
 
     public Command rotate(int amount) {return null;}
     public Command scale(float amount) {
-        System.out.println(amount+" scale");
         AbstractGameObject item = renderData.getDynamicItem();
         float scaleX = item.getScaleX();
         float scaleY = item.getScaleY();
