@@ -37,6 +37,10 @@ public class MapInputProcessor implements InputProcessor {
                     command.undo();
                     redoList.push(command);
                 }
+            } else if(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && Gdx.input.isKeyPressed(Input.Keys.TAB)) {
+                state.flipY();
+            } else if(Gdx.input.isKeyPressed(Input.Keys.TAB)) {
+                state.flipX();
             } else {
                 state.customKeyAction();
             }
@@ -87,6 +91,8 @@ public class MapInputProcessor implements InputProcessor {
                 state.scale(i*0.1f);
             } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
                 state.rotate(i);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+                state.opacity(i*0.05f);
             } else {
                 state.changeItem(i);
             }

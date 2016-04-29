@@ -13,6 +13,8 @@ public abstract class AbstractGameObject {
     protected float posX, posY;
     protected float scaleX = 1f, scaleY = 1f;
     protected float opacity = 1f;
+    protected boolean flipX;
+    protected boolean flipY;
 
     public AbstractGameObject() {}
     public AbstractGameObject(AbstractGameObject gameObject) {
@@ -22,6 +24,8 @@ public abstract class AbstractGameObject {
         this.scaleX = gameObject.scaleX;
         this.scaleY = gameObject.scaleY;
         this.opacity = gameObject.opacity;
+        this.flipX = gameObject.flipX;
+        this.flipY = gameObject.flipY;
     }
 
     public long getId() {
@@ -77,10 +81,29 @@ public abstract class AbstractGameObject {
     }
 
     public void setOpacity(float opacity) {
-        if (opacity > 1 || opacity < 0)  {
+        if (opacity > 1)  {
             opacity = 1;
         }
+        if (opacity < 0)  {
+            opacity = 0;
+        }
         this.opacity = opacity;
+    }
+
+    public boolean isFlipX() {
+        return flipX;
+    }
+
+    public void setFlipX(boolean flipX) {
+        this.flipX = flipX;
+    }
+
+    public boolean isFlipY() {
+        return flipY;
+    }
+
+    public void setFlipY(boolean flipY) {
+        this.flipY = flipY;
     }
 
 /*    @Override

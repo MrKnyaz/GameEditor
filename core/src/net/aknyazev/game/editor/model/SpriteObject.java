@@ -27,9 +27,13 @@ public class SpriteObject extends AbstractGameObject {
     }
 
     public void draw(SpriteBatch batch) {
-        float spriteWidth = region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX;
-        float spriteHeight = region.getRegionHeight()/Constants.PIXPERUNIT * scaleY;
+        batch.setColor(1, 1, 1, opacity);
+        int flipByX = flipX ? -1 : 1;
+        int flipByY = flipY ? -1 : 1;
+        float spriteWidth = region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX*flipByX;
+        float spriteHeight = region.getRegionHeight()/Constants.PIXPERUNIT * scaleY*flipByY;
         batch.draw(region, posX-spriteWidth/2, posY-spriteHeight/2, spriteWidth, spriteHeight);
+        batch.setColor(1, 1, 1, 1);
     }
 
     public TextureRegion getRegion() {

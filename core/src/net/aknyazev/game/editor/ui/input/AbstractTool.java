@@ -38,6 +38,29 @@ abstract public class AbstractTool {
     }
     public Command scaleX(int amount) {return null;}
     public Command scaleY(int amount) {return null;}
+    public Command opacity(float amount) {
+        AbstractGameObject item = renderData.getDynamicItem();
+        item.setOpacity(item.getOpacity()+amount);
+        return null;
+    }
+
+    public Command flipX() {
+        if (renderData.getDynamicItem().isFlipX()) {
+            renderData.getDynamicItem().setFlipX(false);
+        } else {
+            renderData.getDynamicItem().setFlipX(true);
+        }
+        return null;
+    }
+
+    public Command flipY() {
+        if (renderData.getDynamicItem().isFlipY()) {
+            renderData.getDynamicItem().setFlipY(false);
+        } else {
+            renderData.getDynamicItem().setFlipY(true);
+        }
+        return null;
+    }
 
     public void attachToMouse(int x, int y) {}
 
