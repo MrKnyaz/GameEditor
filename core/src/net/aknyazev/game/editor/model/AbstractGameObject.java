@@ -15,6 +15,7 @@ public abstract class AbstractGameObject {
     protected float opacity = 1f;
     protected boolean flipX;
     protected boolean flipY;
+    protected float width = 1, height = 1;
 
     public AbstractGameObject() {}
     public AbstractGameObject(AbstractGameObject gameObject) {
@@ -26,6 +27,8 @@ public abstract class AbstractGameObject {
         this.opacity = gameObject.opacity;
         this.flipX = gameObject.flipX;
         this.flipY = gameObject.flipY;
+        this.width = gameObject.width;
+        this.height = gameObject.height;
     }
 
     public long getId() {
@@ -106,6 +109,19 @@ public abstract class AbstractGameObject {
         this.flipY = flipY;
     }
 
+    public float getXLow() {
+        return posX-width*scaleX/2;
+    }
+    public float getXHigh() {
+        return posX+width*scaleX/2;
+    }
+    public float getYLow() {
+        return posY-height*scaleY/2;
+    }
+    public float getYHigh() {
+        return posY+height*scaleY/2;
+    }
+
 /*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -122,7 +138,7 @@ public abstract class AbstractGameObject {
         return (int) (id ^ (id >>> 32));
     }*/
 
-    public abstract void draw(SpriteBatch batch);
+    public void draw(SpriteBatch batch){}
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package net.aknyazev.game.editor.assets.shaders;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.world.RenderData;
 
 /**
@@ -14,7 +15,7 @@ abstract public class AbstractShader {
         this.name = name;
     }
 
-    public void apply(SpriteBatch batch, RenderData renderData) {
+    public void apply(SpriteBatch batch, Layer layer) {
     }
 
     public String getName() {

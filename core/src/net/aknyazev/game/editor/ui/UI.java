@@ -102,14 +102,14 @@ public class UI {
 
         table.add(saveLoadPanel = new SaveLoadPanel(this, skin)).top();
         //sprite tool layout
-        Table spriteToolTable = new Table().pad(5f);
-        spriteToolTable.add(spriteToolButton).colspan(2).left();
-        spriteToolTable.row();
-        spriteToolTable.add(new Label("Atlas:", skin)).right();
-        spriteToolTable.add(atlasSelect).left();
-        spriteToolTable.add(new Label("Sprite:", skin)).right();
-        spriteToolTable.add(spriteSelect).left();
-        table.add(spriteToolTable).top();
+        Table spriteTable = new Table().pad(5f);
+        spriteTable.add(spriteToolButton).colspan(2).left();
+        spriteTable.row();
+        spriteTable.add(new Label("Atlas:", skin)).right();
+        spriteTable.add(atlasSelect).left();
+        spriteTable.add(new Label("Sprite:", skin)).right();
+        spriteTable.add(spriteSelect).left();
+        table.add(spriteTable).top();
 
         table.add(selectionToolButton).top().pad(5f);
         table.add(physicsToolButton).top().pad(5f);

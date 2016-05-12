@@ -16,15 +16,21 @@ public class Layer {
     //1 - normal speed, 0 - doesn't move
     float speed = 1.0f;
     GameObjectTree<AbstractGameObject> items;
+    List<AbstractGameObject> preparedItems = new ArrayList<AbstractGameObject>();
     String name;
+
     public Layer(String name) {
         items = new GameObjectTree<AbstractGameObject>();
         this.name = name;
         shader = AssetManager.getInstance().getDefaultShader();
     }
 
+    public void prepareData(float xLow, float yLow, float xHigh, float yHigh) {
+        preparedItems = items.getAsList(xLow, yLow, xHigh, yHigh);
+    }
+
     public List<AbstractGameObject> getItems() {
-        return items.getAsList();
+        return preparedItems;
     }
 
     public void addItem(AbstractGameObject item) {

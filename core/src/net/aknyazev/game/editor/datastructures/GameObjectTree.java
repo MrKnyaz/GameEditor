@@ -8,7 +8,7 @@ import java.util.List;
  * Created by MrKnyaz on 2016-04-15.
  */
 public class GameObjectTree<T> {
-    //TODO - proper quad tree
+    //TODO - proper tree
     List<T> list;
     public GameObjectTree() {
         list = new ArrayList<T>();
@@ -22,7 +22,7 @@ public class GameObjectTree<T> {
         list.remove(item);
     }
 
-    public List<T> getAsList() {
+    public List<T> getAsList(float xLow, float yLow, float xHigh, float yHigh) {
         return list;
     }
 }

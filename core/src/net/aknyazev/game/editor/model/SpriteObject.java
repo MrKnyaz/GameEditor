@@ -17,6 +17,8 @@ public class SpriteObject extends AbstractGameObject {
         this.region = region;
         this.atlasName = atlasName;
         this.regionName = regionName;
+        this.width = region.getRegionWidth()/ Constants.PIXPERUNIT;
+        this.height = region.getRegionHeight()/Constants.PIXPERUNIT;
     }
 
     public SpriteObject(SpriteObject gameObject) {
@@ -30,9 +32,9 @@ public class SpriteObject extends AbstractGameObject {
         batch.setColor(1, 1, 1, opacity);
         int flipByX = flipX ? -1 : 1;
         int flipByY = flipY ? -1 : 1;
-        float spriteWidth = region.getRegionWidth()/ Constants.PIXPERUNIT * scaleX*flipByX;
-        float spriteHeight = region.getRegionHeight()/Constants.PIXPERUNIT * scaleY*flipByY;
-        batch.draw(region, posX-spriteWidth/2, posY-spriteHeight/2, spriteWidth, spriteHeight);
+        float spriteWidth = width * scaleX * flipByX;
+        float spriteHeight = height * scaleY * flipByY;
+        batch.draw(region, posX - spriteWidth/2, posY - spriteHeight/2, spriteWidth, spriteHeight);
         batch.setColor(1, 1, 1, 1);
     }
 
