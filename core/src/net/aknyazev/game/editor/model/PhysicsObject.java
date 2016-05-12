@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class PhysicsObject extends AbstractGameObject {
     Texture texture;
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
 
     }
 }

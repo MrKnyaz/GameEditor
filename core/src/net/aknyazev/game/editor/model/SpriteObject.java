@@ -28,7 +28,7 @@ public class SpriteObject extends AbstractGameObject {
         this.regionName = gameObject.regionName;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, float delta) {
         batch.setColor(1, 1, 1, opacity);
         int flipByX = flipX ? -1 : 1;
         int flipByY = flipY ? -1 : 1;

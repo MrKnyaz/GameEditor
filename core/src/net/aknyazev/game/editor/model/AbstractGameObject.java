@@ -138,7 +138,7 @@ public abstract class AbstractGameObject {
         return (int) (id ^ (id >>> 32));
     }*/
 
-    public void draw(SpriteBatch batch){}
+    public void draw(SpriteBatch batch, float delta){}
 
     @Override
     public String toString() {

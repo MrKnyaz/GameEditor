@@ -10,13 +10,4 @@ import net.aknyazev.game.editor.assets.Atlas;
  */
 public class UIData {
 
-    public SpriteObject[] getSpriteObjects(Atlas currentAtlas) {
-        Array<TextureAtlas.AtlasRegion> regionArray = currentAtlas.getTextureAtlas().getRegions();
-        SpriteObject[] result = new SpriteObject[regionArray.size];
-        int i = 0;
-        for (TextureAtlas.AtlasRegion region: regionArray) {
-            result[i++] = new SpriteObject(currentAtlas.getName(), region.name, region);
-        }
-        return result;
-    }
 }

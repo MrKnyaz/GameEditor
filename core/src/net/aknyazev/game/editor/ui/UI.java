@@ -93,7 +93,6 @@ public class UI {
 
         //Add ui
         atlasSelect = new SelectBox(skin);
-        atlasSelect.setSize(1000f, 10f);
         spriteSelect = new SelectBox(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
@@ -204,7 +203,7 @@ public class UI {
     }
     public void updateSpritesList() {
         Atlas atlas = atlasSelect.getSelected();
-        spriteSelect.setItems(uiData.getSpriteObjects(atlas));
+        spriteSelect.setItems(atlas.getSpriteObjects());
     }
 
     public void updateLayerInfo() {

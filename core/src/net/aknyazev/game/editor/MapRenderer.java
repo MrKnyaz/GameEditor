@@ -51,14 +51,14 @@ public class MapRenderer {
             List<AbstractGameObject> items = layer.getItems();
             for (int j = 0; j < items.size(); j++) {
                 AbstractGameObject abstractItem =  items.get(j);
-                abstractItem.draw(batch);
+                abstractItem.draw(batch, delta);
             }
 
             //render item bound to mouse
             if (renderData.getCurrentLayer() == i) {
                 AbstractGameObject dynamicItem = renderData.getDynamicItem();
                 if (dynamicItem != null) {
-                    dynamicItem.draw(batch);
+                    dynamicItem.draw(batch, delta);
                 }
             }
         }

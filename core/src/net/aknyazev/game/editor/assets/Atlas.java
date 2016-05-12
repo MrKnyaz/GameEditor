@@ -3,6 +3,8 @@ package net.aknyazev.game.editor.assets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import net.aknyazev.game.editor.model.SpriteObject;
 
 /**
  * Author: MrKnyaz
@@ -30,6 +32,17 @@ public class Atlas {
     public TextureAtlas getTextureAtlas() {
         return textureAtlas;
     }
+
+    public SpriteObject[] getSpriteObjects() {
+        Array<TextureAtlas.AtlasRegion> regionArray = textureAtlas.getRegions();
+        SpriteObject[] result = new SpriteObject[regionArray.size];
+        int i = 0;
+        for (TextureAtlas.AtlasRegion region: regionArray) {
+            result[i++] = new SpriteObject(name, region.name, region);
+        }
+        return result;
+    }
+
 
     public void dispose() {
         textureAtlas.dispose();
