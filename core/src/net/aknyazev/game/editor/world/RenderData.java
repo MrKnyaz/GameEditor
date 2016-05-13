@@ -9,7 +9,6 @@ import net.aknyazev.game.editor.ui.command.AddCommand;
 import net.aknyazev.game.editor.ui.command.Command;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: MrKnyaz
@@ -21,8 +20,12 @@ public class RenderData {
 
     private ArrayList<Layer> layers;
     private boolean allLayers = true;
-    private int currentLayer;
+    private int currentLayerIndex;
+    private Layer currentLayer;
     private AbstractGameObject dynamicItem;
+
+    //dark_intensity for lights
+    private float darkIntensity = 85f;
 
     public RenderData() {
         layers = new ArrayList<Layer>();
@@ -37,12 +40,12 @@ public class RenderData {
         this.allLayers = allLayers;
     }
 
-    public int getCurrentLayer() {
-        return currentLayer;
+    public int getCurrentLayerIndex() {
+        return currentLayerIndex;
     }
 
-    public void setCurrentLayer(int currentLayer) {
-        this.currentLayer = currentLayer;
+    public void setCurrentLayerIndex(int currentLayerIndex) {
+        this.currentLayerIndex = currentLayerIndex;
     }
 
     public AbstractGameObject getDynamicItem() {
@@ -57,9 +60,25 @@ public class RenderData {
         return layers;
     }
 
+    public float getDarkIntensity() {
+        return darkIntensity;
+    }
+
+    public void setDarkIntensity(float darkIntensity) {
+        this.darkIntensity = darkIntensity;
+    }
+
+    public Layer getCurrentLayer() {
+        return currentLayer;
+    }
+
+    public void setCurrentLayer(Layer currentLayer) {
+        this.currentLayer = currentLayer;
+    }
+
     public Command addItem(AbstractGameObject item) {
         item.setId(size++);
-        return new AddCommand(item, layers.get(currentLayer)).execute();
+        return new AddCommand(item, layers.get(currentLayerIndex)).execute();
     }
 
     public float getWorldX(int screenX) {
@@ -67,13 +86,14 @@ public class RenderData {
         //because of stupid middle-screen coordinates I moved camera by half of viewport at the beginning
         //So we apply speed to layer only after we subtract this half
         //This is done to have layers at the same position on start
-        return (camera.position.x-camera.viewportWidth/2)*layers.get(currentLayer).getSpeed()
+        return (camera.position.x-camera.viewportWidth/2)*layers.get(currentLayerIndex).getSpeed()
                 +screenX / Constants.getPixelsPerUnit();
     }
 
     public float getWorldY(int screenY) {
         OrthographicCamera camera = Constants.cam;
-        return (camera.position.y-camera.viewportHeight/2)*layers.get(currentLayer).getSpeed()
+        return (camera.position.y-camera.viewportHeight/2)*layers.get(currentLayerIndex).getSpeed()
                 +(Constants.getViewPortHeight()-screenY/Constants.getPixelsPerUnit());
     }
+
 }

@@ -12,12 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.aknyazev.game.editor.assets.AssetManager;
 import net.aknyazev.game.editor.assets.Atlas;
+import net.aknyazev.game.editor.model.LightObject;
 import net.aknyazev.game.editor.model.SpriteObject;
 import net.aknyazev.game.editor.model.UIData;
-import net.aknyazev.game.editor.ui.input.MapInputProcessor;
-import net.aknyazev.game.editor.ui.input.PhysicsRectangleTool;
-import net.aknyazev.game.editor.ui.input.SelectionTool;
-import net.aknyazev.game.editor.ui.input.SpriteTool;
+import net.aknyazev.game.editor.ui.input.*;
 import net.aknyazev.game.editor.world.RenderData;
 
 /**
@@ -41,6 +39,8 @@ public class UI {
     SelectBox<Atlas> atlasSelect;
     SelectBox<SpriteObject> spriteSelect;
 
+    TextButton lightToolButton;
+    SelectBox<LightObject> lightSelect;
     TextButton physicsToolButton;
     SelectBox physicsSelect;
 
@@ -51,6 +51,7 @@ public class UI {
     //controllers
     SelectionTool selectionTool;
     SpriteTool spriteTool;
+    LightTool lightTool;
     PhysicsRectangleTool objectDrawingState;
     UIController mainController;
 
@@ -60,6 +61,7 @@ public class UI {
         mainController = new UIController(renderData, uiData, this);
         selectionTool = new SelectionTool(renderData, this);
         spriteTool = new SpriteTool(renderData, this);
+        lightTool = new LightTool(renderData, this);
         objectDrawingState = new PhysicsRectangleTool(renderData, this);
 
         stage = new Stage();
@@ -94,21 +96,29 @@ public class UI {
         //Add ui
         atlasSelect = new SelectBox(skin);
         spriteSelect = new SelectBox(skin);
+        lightSelect = new SelectBox(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
         spriteToolButton = new TextButton("Sprite Tool", skin);
+        lightToolButton = new TextButton("Light Tool", skin);
         physicsToolButton = new TextButton("Physics Tool", skin);
 
         table.add(saveLoadPanel = new SaveLoadPanel(this, skin)).top();
         //sprite tool layout
-        Table spriteTable = new Table().pad(5f);
-        spriteTable.add(spriteToolButton).colspan(2).left();
-        spriteTable.row();
-        spriteTable.add(new Label("Atlas:", skin)).right();
-        spriteTable.add(atlasSelect).left();
-        spriteTable.add(new Label("Sprite:", skin)).right();
-        spriteTable.add(spriteSelect).left();
-        table.add(spriteTable).top();
+        Table column2 = new Table().pad(5f);
+        column2.add(spriteToolButton).colspan(4).left();
+        column2.row();
+        column2.add(new Label("Atlas:", skin)).right();
+        column2.add(atlasSelect).left();
+        column2.add(new Label("Sprite:", skin)).right();
+        column2.add(spriteSelect).left();
+        //LightTool layout
+        column2.row();
+        column2.add(lightToolButton).colspan(4).left();
+        column2.row();
+        column2.add(new Label("Light:", skin)).right();
+        column2.add(lightSelect).colspan(3).left();
+        table.add(column2).top();
 
         table.add(selectionToolButton).top().pad(5f);
         table.add(physicsToolButton).top().pad(5f);
@@ -135,6 +145,14 @@ public class UI {
                 updateButtonsColors();
             }
         });
+        lightToolButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                mapInputProcessor.setState(lightTool);
+                updateButtonsColors();
+            }
+        });
         physicsToolButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -153,6 +171,12 @@ public class UI {
         spriteSelect.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 mainController.setDynamicItem(new SpriteObject(spriteSelect.getSelected()));
+            }
+        });
+        //Light selected
+        lightSelect.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                mainController.setDynamicItem(new LightObject(lightSelect.getSelected()));
             }
         });
     }
@@ -174,6 +198,7 @@ public class UI {
     }
 
     public void updateUI() {
+        lightSelect.setItems(AssetManager.getInstance().getLightsArray());
         updateButtonsColors();
         //updateFromModels();
     }
@@ -189,6 +214,11 @@ public class UI {
             spriteToolButton.setColor(0, 1, 1, 1);
         } else {
             spriteToolButton.setColor(1, 1, 1, 1);
+        }
+        if (mapInputProcessor.getState() instanceof LightTool) {
+            lightToolButton.setColor(0, 1, 1, 1);
+        } else {
+            lightToolButton.setColor(1, 1, 1, 1);
         }
         if (mapInputProcessor.getState() instanceof PhysicsRectangleTool) {
             physicsToolButton.setColor(0, 1, 1, 1);
@@ -228,10 +258,22 @@ public class UI {
         int currentIndex = spriteSelect.getSelectedIndex();
         spriteSelect.setSelectedIndex(currentIndex < spriteSelect.getItems().size - 1 ? currentIndex + 1 : 0);
     }
+
     public void previousSprite() {
         int currentIndex = spriteSelect.getSelectedIndex();
         spriteSelect.setSelectedIndex(currentIndex > 0 ? spriteSelect.getSelectedIndex() - 1 : spriteSelect.getItems().size - 1);
     }
+
+    public void nextLight() {
+        int currentIndex = lightSelect.getSelectedIndex();
+        lightSelect.setSelectedIndex(currentIndex < lightSelect.getItems().size - 1 ? currentIndex + 1 : 0);
+    }
+
+    public void previousLight() {
+        int currentIndex = lightSelect.getSelectedIndex();
+        lightSelect.setSelectedIndex(currentIndex > 0 ? lightSelect.getSelectedIndex() - 1 : lightSelect.getItems().size - 1);
+    }
+
     public void dispose() {
         stage.dispose();
     }

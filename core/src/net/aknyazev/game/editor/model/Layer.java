@@ -33,6 +33,16 @@ public class Layer {
         return preparedItems;
     }
 
+    public List<LightObject> getLights() {
+        List<LightObject> result = new ArrayList<LightObject>();
+        for (AbstractGameObject item : preparedItems) {
+            if(item instanceof LightObject) {
+                result.add((LightObject)item);
+            }
+        }
+        return result;
+    }
+
     public void addItem(AbstractGameObject item) {
         items.add(item);
     }

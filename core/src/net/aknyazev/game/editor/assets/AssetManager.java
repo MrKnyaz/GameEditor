@@ -3,6 +3,8 @@ package net.aknyazev.game.editor.assets;
 import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.assets.shaders.DefaultShader;
 import net.aknyazev.game.editor.assets.shaders.GammaShader;
+import net.aknyazev.game.editor.assets.shaders.LightShader;
+import net.aknyazev.game.editor.model.LightObject;
 import net.aknyazev.game.editor.util.FileUtils;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class AssetManager {
 
     DefaultShader defaultShader;
     List<AbstractShader> shaders = new ArrayList<AbstractShader>();
+    List<LightObject> lights = new ArrayList<LightObject>();
 
     private  AssetManager(String path) {
         atlases = FileUtils.loadAtlas(path);
@@ -27,6 +30,9 @@ public class AssetManager {
         shaders.add(defaultShader);
         shaders.add(new GammaShader("medium_dark", 30f));
         shaders.add(new GammaShader("very_dark", 5f));
+        shaders.add(new LightShader("light_shader"));
+        lights.add(new LightObject("Round Light"));
+        lights.add(new LightObject("Round Light1"));
     }
 
     public static AssetManager getInstance() {
@@ -55,6 +61,15 @@ public class AssetManager {
 
     public List<AbstractShader> getShaders() {
         return shaders;
+    }
+
+    public LightObject[] getLightsArray() {
+        LightObject[] result = new LightObject[lights.size()];
+        int index = 0;
+        for (LightObject light: lights) {
+            result[index++] = light;
+        }
+        return result;
     }
 
     public void dispose() {

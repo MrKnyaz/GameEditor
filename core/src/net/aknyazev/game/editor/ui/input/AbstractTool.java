@@ -19,6 +19,8 @@ abstract public class AbstractTool {
         this.ui = ui;
     }
 
+    public void init() {}
+
     public void changeItem(int amount) {}
 
     public Command rotate(int amount) {return null;}
@@ -62,7 +64,13 @@ abstract public class AbstractTool {
         return null;
     }
 
-    public void attachToMouse(int x, int y) {}
+    public void attachToMouse(int x, int y) {
+        if (renderData.getDynamicItem() != null) {
+            renderData.getDynamicItem().setPosX(renderData.getWorldX(x));
+            renderData.getDynamicItem().setPosY(renderData.getWorldY(y));
+        }
+    }
+
 
     public Command submit(int screenX, int screenY) {
         //To change body of implemented methods use File | Settings | File Templates.

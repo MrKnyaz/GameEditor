@@ -2,7 +2,7 @@ package net.aknyazev.game.editor.assets.shaders;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import net.aknyazev.game.editor.model.Layer;
+import net.aknyazev.game.editor.world.RenderData;
 
 /**
  * Created by MrKnyaz on 2016-04-27.
@@ -16,7 +16,7 @@ public class DefaultShader extends  AbstractShader {
     }
 
     @Override
-    public void apply(SpriteBatch batch, Layer layer) {
+    public void apply(SpriteBatch batch, RenderData renderData) {
         batch.setShader(shaderProgram);
     }
 }

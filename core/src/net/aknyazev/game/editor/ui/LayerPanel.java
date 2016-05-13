@@ -10,8 +10,6 @@ import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.world.RenderData;
 
-import java.util.ArrayList;
-
 /**
  * Created by MrKnyaz on 2016-04-18.
  */
@@ -111,7 +109,7 @@ public class LayerPanel extends Table {
         shaderSelect.setItems(assetManager.getShaders().toArray());
     }
     public void updateFields() {
-        Layer layer = renderData.getLayers().get(renderData.getCurrentLayer());
+        Layer layer = renderData.getLayers().get(renderData.getCurrentLayerIndex());
         nameTF.setText(layer.toString());
         speedTF.setText(Float.toString(layer.getSpeed()));
         shaderSelect.setSelected(layer.getShader());

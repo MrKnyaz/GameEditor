@@ -5,22 +5,22 @@ package net.aknyazev.game.editor.model;
  */
 public class LightObject extends AbstractGameObject {
 
-    boolean isAnimated = false;
-    float radius = 2;
-    float intensity = 100;
-
-    public LightObject(boolean isAnimated) {
+    String name;
+    public LightObject(String name) {
         super();
-        this.isAnimated = isAnimated;
+        this.name = name;
     }
 
     public LightObject(LightObject lightObject) {
         super(lightObject);
-        this.isAnimated = lightObject.isAnimated;
+        this.name = lightObject.name;
     }
 
-    public float getRadius() {
-        return radius*scaleX;
+    public float getLength() {
+        return width*scaleX;
     }
 
+    public String toString() {
+        return name;
+    }
 }

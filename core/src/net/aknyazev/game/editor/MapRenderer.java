@@ -34,6 +34,7 @@ public class MapRenderer {
 
         for (int i = layers.size()-1; i >= 0; i--) {
             Layer layer = layers.get(i);
+            renderData.setCurrentLayer(layer);
             //change OpenGL projection matrix according to layer speed
             cam.position.x = Constants.getViewPortWidth()/2+(camStandartPosX-Constants.getViewPortWidth()/2)*layer.getSpeed();
             cam.position.y = Constants.getViewPortHeight()/2+(camStandartPosY-Constants.getViewPortHeight()/2)*layer.getSpeed();
@@ -45,7 +46,7 @@ public class MapRenderer {
                     cam.position.x + Constants.getViewPortWidth()/2, cam.position.y + Constants.getViewPortHeight()/2);
             AbstractShader layerShader = layer.getShader();
             if (!lastShader.equals(layerShader) || layerShader instanceof LightShader) {
-                layerShader.apply(batch, layer);
+                layerShader.apply(batch, renderData);
                 lastShader = layerShader;
             }
             List<AbstractGameObject> items = layer.getItems();
@@ -55,7 +56,7 @@ public class MapRenderer {
             }
 
             //render item bound to mouse
-            if (renderData.getCurrentLayer() == i) {
+            if (renderData.getCurrentLayerIndex() == i) {
                 AbstractGameObject dynamicItem = renderData.getDynamicItem();
                 if (dynamicItem != null) {
                     dynamicItem.draw(batch, delta);

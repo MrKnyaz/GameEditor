@@ -2,7 +2,6 @@ package net.aknyazev.game.editor.ui;
 
 import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.model.*;
-import net.aknyazev.game.editor.util.FileUtils;
 import net.aknyazev.game.editor.world.RenderData;
 
 import java.util.ArrayList;
@@ -27,18 +26,18 @@ public class UIController {
     }
 
     public void setCurrentLayer(int index) {
-        renderData.setCurrentLayer(index);
+        renderData.setCurrentLayerIndex(index);
         ui.updateLayerInfo();
     }
 
     public void rearrangeLayer(int direction) {
         ArrayList<Layer> layers = renderData.getLayers();
-        int currentLayer = renderData.getCurrentLayer();
+        int currentLayer = renderData.getCurrentLayerIndex();
         if (currentLayer + direction < layers.size() && currentLayer + direction >= 0) {
             Layer tmpLayer = layers.get(currentLayer);
             layers.set(currentLayer, layers.get(currentLayer+direction));
             layers.set(currentLayer+direction, tmpLayer);
-            renderData.setCurrentLayer(currentLayer+direction);
+            renderData.setCurrentLayerIndex(currentLayer + direction);
             ui.updateLayersList();
         }
 
