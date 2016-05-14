@@ -23,7 +23,7 @@ public class GammaShader extends  AbstractShader {
     }
 
     @Override
-    public void apply(SpriteBatch batch, RenderData renderData) {
+    public void apply(SpriteBatch batch, RenderData renderData, int layerIndex) {
         batch.setShader(shaderProgram);
         shaderProgram.setUniformf("u_gamma", gamma);
     }

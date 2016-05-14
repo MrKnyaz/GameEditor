@@ -23,6 +23,8 @@ public class MapRenderer {
     }
 
     public void render(SpriteBatch batch, float delta) {
+        renderData.setDarkIntensity(10*delta);
+
         List<Layer> layers = renderData.getLayers();
         OrthographicCamera cam = Constants.cam;
         float camStandartPosX = cam.position.x;
@@ -30,11 +32,10 @@ public class MapRenderer {
 
         AssetManager assetManager = AssetManager.getInstance();
         AbstractShader lastShader = assetManager.getDefaultShader();
-        assetManager.getDefaultShader().apply(batch, null);
+        assetManager.getDefaultShader().apply(batch, null, 0);
 
         for (int i = layers.size()-1; i >= 0; i--) {
             Layer layer = layers.get(i);
-            renderData.setCurrentLayer(layer);
             //change OpenGL projection matrix according to layer speed
             cam.position.x = Constants.getViewPortWidth()/2+(camStandartPosX-Constants.getViewPortWidth()/2)*layer.getSpeed();
             cam.position.y = Constants.getViewPortHeight()/2+(camStandartPosY-Constants.getViewPortHeight()/2)*layer.getSpeed();
@@ -46,7 +47,7 @@ public class MapRenderer {
                     cam.position.x + Constants.getViewPortWidth()/2, cam.position.y + Constants.getViewPortHeight()/2);
             AbstractShader layerShader = layer.getShader();
             if (!lastShader.equals(layerShader) || layerShader instanceof LightShader) {
-                layerShader.apply(batch, renderData);
+                layerShader.apply(batch, renderData, i);
                 lastShader = layerShader;
             }
             List<AbstractGameObject> items = layer.getItems();

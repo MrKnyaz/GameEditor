@@ -15,7 +15,7 @@ abstract public class AbstractShader {
         this.name = name;
     }
 
-    public void apply(SpriteBatch batch, RenderData renderData) {
+    public void apply(SpriteBatch batch, RenderData renderData, int layerIndex) {
     }
 
     public String getName() {

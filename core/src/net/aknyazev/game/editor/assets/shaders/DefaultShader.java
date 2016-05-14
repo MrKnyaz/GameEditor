@@ -16,7 +16,7 @@ public class DefaultShader extends  AbstractShader {
     }
 
     @Override
-    public void apply(SpriteBatch batch, RenderData renderData) {
+    public void apply(SpriteBatch batch, RenderData renderData, int layerIndex) {
         batch.setShader(shaderProgram);
     }
 }

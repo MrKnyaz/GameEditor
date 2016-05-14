@@ -4,7 +4,7 @@ uniform sampler2D u_texture;
 //"in" varyings from our vertex shader
 varying vec4 v_color;
 varying vec2 v_texCoords;
-varying int v_lightCount;
+varying vec2 v_lightProps;
 varying vec3[26] v_light;
 
 void main() {
@@ -18,8 +18,8 @@ void main() {
 
 
 	vec2 pix = gl_FragCoord.xy;
-	float dark_intensity = 85f;
-	for (int i=0; i<v_lightCount+10; i++) {
+	float dark_intensity = v_lightProps.y;
+	for (int i=0; i<v_lightProps.x; i++) {
 		//calculate distance between current pixel and light center
 		float light_radius = v_light[i].z;
 		float distance = sqrt(pow(pix.x-v_light[i].x,2)+pow(pix.y-v_light[i].y,2));
@@ -34,10 +34,10 @@ void main() {
 				dark_intensity = (dark_intensity/100)*(100 + (pow(light_intensity,0.6)));
 			}
 		}
-		vec3 rgbColor = (texColor.rgb-(texColor.rgb/100)*dark_intensity);
-		//final color
-		gl_FragColor = v_color * vec4(rgbColor, texColor.a);
 
 	}
+	vec3 rgbColor = (texColor.rgb-(texColor.rgb/100)*dark_intensity);
+	//final color
+	gl_FragColor = v_color * vec4(rgbColor, texColor.a);
 
 }

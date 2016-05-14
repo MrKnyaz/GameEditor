@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector2;
 import net.aknyazev.game.editor.Constants;
+import net.aknyazev.game.editor.model.Layer;
 import net.aknyazev.game.editor.model.LightObject;
 import net.aknyazev.game.editor.world.RenderData;
 
@@ -24,22 +26,24 @@ public class LightShader extends  AbstractShader {
     }
 
     @Override
-    public void apply(SpriteBatch batch, RenderData renderData) {
+    public void apply(SpriteBatch batch, RenderData renderData, int layerIndex) {
         batch.setShader(shaderProgram);
-        List<LightObject> lights = renderData.getCurrentLayer().getLights();
+        Layer layer = renderData.getLayers().get(layerIndex);
+        List<LightObject> lights = layer.getLights();
+        int lightsCount = lights.size();
         //generating float array, split by blocks(xpos, ypos, radius, angle)
-        float[] lightsArray = new float[(lights.size()+1)*4];
+        float[] lightsArray = new float[(lights.size()+1)*3];
         int index = 0;
         for (LightObject light: lights) {
             setValues(lightsArray, index, light);
             index+=3;
         }
-        if (renderData.getDynamicItem() instanceof LightObject) {
+        if (layerIndex == renderData.getCurrentLayerIndex() && renderData.getDynamicItem() instanceof LightObject) {
             setValues(lightsArray, index, (LightObject)  renderData.getDynamicItem());
+            lightsCount++;
         }
-        //System.out.println(Mouse.getX());
-        shaderProgram.setUniformi("u_lightCount", lights.size() + 1);
-        shaderProgram.setUniform3fv("u_light", lightsArray, 0, (lights.size()+1) * 3);
+        shaderProgram.setUniformf("u_lightProps", new Vector2(lightsCount, renderData.getDarkIntensity()));
+        shaderProgram.setUniform3fv("u_light", lightsArray, 0, lightsCount * 3);
     }
 
     private void setValues(float[] lightsArray, int index, LightObject light) {
@@ -47,9 +51,6 @@ public class LightShader extends  AbstractShader {
         lightsArray[index] = (light.getPosX() - (camera.position.x-camera.viewportWidth/2))*Constants.getPixelsPerUnit();
         lightsArray[index+1] = (light.getPosY() - (camera.position.y-camera.viewportHeight/2))*Constants.getPixelsPerUnit();
         lightsArray[index+2] = light.getLength()*Constants.getPixelsPerUnit();
-        System.out.println("posY"+light.getPosY());
-        System.out.println("viewport"+camera.viewportHeight);
-        System.out.println(lightsArray[index+1]);
         //lightsArray[index+3] = light.getRotation();
     }
 }
