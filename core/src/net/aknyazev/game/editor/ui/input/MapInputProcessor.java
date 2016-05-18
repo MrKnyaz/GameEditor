@@ -61,9 +61,13 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Command command = state.submit(screenX, screenY);
-        if (command != null) {
-            undoList.push(command);
+        try {
+            Command command = state.submit(screenX, screenY);
+            if (command != null) {
+                undoList.push(command);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
         return true;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -80,7 +84,11 @@ public class MapInputProcessor implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int x, int y) {
-        state.attachToMouse(x, y);
+        try {
+            state.attachToMouse(x, y);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
