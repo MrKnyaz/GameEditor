@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import net.aknyazev.game.editor.assets.AssetManager;
 import net.aknyazev.game.editor.assets.Atlas;
+import net.aknyazev.game.editor.model.AnimationObject;
 import net.aknyazev.game.editor.model.LightObject;
 import net.aknyazev.game.editor.model.SpriteObject;
 import net.aknyazev.game.editor.model.UIData;
@@ -41,6 +42,10 @@ public class UI {
 
     TextButton lightToolButton;
     SelectBox<LightObject> lightSelect;
+
+    TextButton animToolButton;
+    SelectBox<AnimationObject> animationSelect;
+
     TextButton physicsToolButton;
     SelectBox physicsSelect;
 
@@ -52,6 +57,7 @@ public class UI {
     SelectionTool selectionTool;
     SpriteTool spriteTool;
     LightTool lightTool;
+    AnimationTool animationTool;
     PhysicsRectangleTool objectDrawingState;
     UIController mainController;
 
@@ -62,6 +68,7 @@ public class UI {
         selectionTool = new SelectionTool(renderData, this);
         spriteTool = new SpriteTool(renderData, this);
         lightTool = new LightTool(renderData, this);
+        animationTool = new AnimationTool(renderData, this);
         objectDrawingState = new PhysicsRectangleTool(renderData, this);
 
         stage = new Stage();
@@ -97,11 +104,13 @@ public class UI {
         atlasSelect = new SelectBox(skin);
         spriteSelect = new SelectBox(skin);
         lightSelect = new SelectBox(skin);
+        animationSelect = new SelectBox(skin);
 
         selectionToolButton = new TextButton("Selection", skin);
         spriteToolButton = new TextButton("Sprite Tool", skin);
         lightToolButton = new TextButton("Light Tool", skin);
         physicsToolButton = new TextButton("Physics Tool", skin);
+        animToolButton = new TextButton("Animation Tool", skin);
 
         table.add(saveLoadPanel = new SaveLoadPanel(this, skin)).top();
         //sprite tool layout
@@ -120,7 +129,14 @@ public class UI {
         column2.add(lightSelect).colspan(3).left();
         table.add(column2).top();
 
-        table.add(selectionToolButton).top().pad(5f);
+        Table column3 = new Table().pad(5f);
+        column3.add(selectionToolButton).colspan(2).left();
+        column3.row();
+        column3.add(animToolButton).colspan(2).left();
+        column3.row();
+        column3.add(new Label("Animation:", skin)).right();
+        column3.add(animationSelect).left();
+        table.add(column3).top();
         table.add(physicsToolButton).top().pad(5f);
 
         table.add(layerPanel = new LayerPanel(this, renderData, skin)).top();
@@ -153,6 +169,14 @@ public class UI {
                 updateButtonsColors();
             }
         });
+        animToolButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                mapInputProcessor.setState(animationTool);
+                updateButtonsColors();
+            }
+        });
         physicsToolButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -179,6 +203,11 @@ public class UI {
                 mainController.setDynamicItem(new LightObject(lightSelect.getSelected()));
             }
         });
+        animationSelect.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                mainController.setDynamicItem(new AnimationObject(animationSelect.getSelected()));
+            }
+        });
     }
 
     public void resize(int width, int height) {
@@ -198,7 +227,7 @@ public class UI {
     }
 
     public void updateUI() {
-        lightSelect.setItems(AssetManager.getInstance().getLightsArray());
+        updateLightList();
         updateButtonsColors();
         //updateFromModels();
     }
@@ -220,6 +249,11 @@ public class UI {
         } else {
             lightToolButton.setColor(1, 1, 1, 1);
         }
+        if (mapInputProcessor.getState() instanceof AnimationTool) {
+            animToolButton.setColor(0, 1, 1, 1);
+        } else {
+            animToolButton.setColor(1, 1, 1, 1);
+        }
         if (mapInputProcessor.getState() instanceof PhysicsRectangleTool) {
             physicsToolButton.setColor(0, 1, 1, 1);
         } else {
@@ -234,6 +268,14 @@ public class UI {
     public void updateSpritesList() {
         Atlas atlas = atlasSelect.getSelected();
         spriteSelect.setItems(atlas.getSpriteObjects());
+    }
+
+    public void updateLightList() {
+        lightSelect.setItems(AssetManager.getInstance().getLightsArray());
+    }
+
+    public void updateAnimationList() {
+        animationSelect.setItems(AssetManager.getInstance().getAnimationsArray());
     }
 
     public void updateLayerInfo() {
@@ -272,6 +314,16 @@ public class UI {
     public void previousLight() {
         int currentIndex = lightSelect.getSelectedIndex();
         lightSelect.setSelectedIndex(currentIndex > 0 ? lightSelect.getSelectedIndex() - 1 : lightSelect.getItems().size - 1);
+    }
+
+    public void nextAnimation() {
+        int currentIndex = animationSelect.getSelectedIndex();
+        animationSelect.setSelectedIndex(currentIndex < animationSelect.getItems().size - 1 ? currentIndex + 1 : 0);
+    }
+
+    public void previousAnimation() {
+        int currentIndex = animationSelect.getSelectedIndex();
+        animationSelect.setSelectedIndex(currentIndex > 0 ? animationSelect.getSelectedIndex() - 1 : animationSelect.getItems().size - 1);
     }
 
     public void dispose() {

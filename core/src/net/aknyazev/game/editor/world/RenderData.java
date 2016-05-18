@@ -25,7 +25,7 @@ public class RenderData {
     private AbstractGameObject dynamicItem;
 
     //dark_intensity for lights
-    private float darkIntensity = 85f;
+    private float darkIntensity = 95f;
     private boolean add = true;
 
     public RenderData() {
@@ -67,13 +67,13 @@ public class RenderData {
 
     public void setDarkIntensity(float darkIntensity) {
         if (add) {
-            if (this.darkIntensity+darkIntensity < 85) {
+            if (this.darkIntensity+darkIntensity < 95) {
                 this.darkIntensity += darkIntensity;
             } else {
                 add =false;
             }
         } else if (!add){
-            if (this.darkIntensity - darkIntensity > 0) {
+            if (this.darkIntensity - darkIntensity > 95) {
                 this.darkIntensity -= darkIntensity;
             } else {
                 add = true;

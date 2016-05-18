@@ -4,6 +4,7 @@ import net.aknyazev.game.editor.assets.shaders.AbstractShader;
 import net.aknyazev.game.editor.assets.shaders.DefaultShader;
 import net.aknyazev.game.editor.assets.shaders.GammaShader;
 import net.aknyazev.game.editor.assets.shaders.LightShader;
+import net.aknyazev.game.editor.model.AnimationObject;
 import net.aknyazev.game.editor.model.LightObject;
 import net.aknyazev.game.editor.util.FileUtils;
 
@@ -23,6 +24,7 @@ public class AssetManager {
     DefaultShader defaultShader;
     List<AbstractShader> shaders = new ArrayList<AbstractShader>();
     List<LightObject> lights = new ArrayList<LightObject>();
+    List<AnimationObject> animations = new ArrayList<AnimationObject>();
 
     private  AssetManager(String path) {
         atlases = FileUtils.loadAtlas(path);
@@ -68,6 +70,19 @@ public class AssetManager {
         int index = 0;
         for (LightObject light: lights) {
             result[index++] = light;
+        }
+        return result;
+    }
+
+    public List<AnimationObject> getAnimations() {
+        return animations;
+    }
+
+    public AnimationObject[] getAnimationsArray() {
+        AnimationObject[] result = new AnimationObject[lights.size()];
+        int index = 0;
+        for (AnimationObject animation: animations) {
+            result[index++] = animation;
         }
         return result;
     }

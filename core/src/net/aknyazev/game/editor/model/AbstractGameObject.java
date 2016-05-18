@@ -16,9 +16,11 @@ public abstract class AbstractGameObject {
     protected boolean flipX;
     protected boolean flipY;
     protected float width = 1, height = 1;
+    String name;
 
     public AbstractGameObject() {}
     public AbstractGameObject(AbstractGameObject gameObject) {
+        this.name = gameObject.name;
         this.rotation = gameObject.rotation;
         this.posX = gameObject.posX;
         this.posY = gameObject.posY;
@@ -122,7 +124,15 @@ public abstract class AbstractGameObject {
         return posY+height*scaleY/2;
     }
 
-/*    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -5,7 +5,6 @@ package net.aknyazev.game.editor.model;
  */
 public class LightObject extends AbstractGameObject {
 
-    String name;
     public LightObject(String name) {
         super();
         this.name = name;
@@ -13,7 +12,6 @@ public class LightObject extends AbstractGameObject {
 
     public LightObject(LightObject lightObject) {
         super(lightObject);
-        this.name = lightObject.name;
     }
 
     public float getLength() {
