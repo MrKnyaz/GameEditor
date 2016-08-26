@@ -26,7 +26,7 @@ public class RenderData {
 
     //dark_intensity for lights
     private float darkIntensity = 95f;
-    private boolean add = true;
+    private boolean addDarkIntensity = true;
 
     public RenderData() {
         layers = new ArrayList<Layer>();
@@ -66,17 +66,17 @@ public class RenderData {
     }
 
     public void setDarkIntensity(float darkIntensity) {
-        if (add) {
+        if (addDarkIntensity) {
             if (this.darkIntensity+darkIntensity < 95) {
                 this.darkIntensity += darkIntensity;
             } else {
-                add =false;
+                addDarkIntensity =false;
             }
-        } else if (!add){
+        } else if (!addDarkIntensity){
             if (this.darkIntensity - darkIntensity > 95) {
                 this.darkIntensity -= darkIntensity;
             } else {
-                add = true;
+                addDarkIntensity = true;
             }
         }
     }
