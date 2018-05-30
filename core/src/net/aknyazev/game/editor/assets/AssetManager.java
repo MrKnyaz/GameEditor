@@ -41,6 +41,7 @@ public class AssetManager {
         return getInstance("packs", false);
     }
 
+    //No need for synchronization, scene2d and my app is single threaded
     public static AssetManager getInstance(String path, boolean reload) {
         if (manager == null || reload) {
             manager = new AssetManager(path);
