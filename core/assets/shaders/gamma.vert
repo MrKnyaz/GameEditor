@@ -11,7 +11,7 @@ uniform float u_gamma;
 varying vec4 v_color;
 varying vec2 v_texCoords;
 varying float v_gamma;
- 
+
 void main() {
 	v_color = a_color;
 	v_color.a = v_color.a * (255.0/254.0);

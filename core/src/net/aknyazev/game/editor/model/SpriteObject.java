@@ -34,7 +34,11 @@ public class SpriteObject extends AbstractGameObject {
         int flipByY = flipY ? -1 : 1;
         float spriteWidth = width * scaleX * flipByX;
         float spriteHeight = height * scaleY * flipByY;
-        batch.draw(region, posX - spriteWidth/2, posY - spriteHeight/2, spriteWidth, spriteHeight);
+        float lowX = posX - spriteWidth/2;
+        float lowY = posY - spriteHeight/2;
+        float originX = spriteWidth / 2f;
+        float originY = spriteHeight / 2f;
+        batch.draw(region, lowX, lowY, originX, originY, spriteWidth, spriteHeight, 1f, 1f, rotation);
         batch.setColor(1, 1, 1, 1);
     }
 

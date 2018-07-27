@@ -10,8 +10,8 @@ varying vec4 v_position;
 void main() {
 	//sample the texture
 	vec4 texColor = texture2D(u_texture, v_texCoords);
-	
-	vec3 rgbColor = (texColor.rgb/100f)*v_gamma;//vec3(0.5f, 0.5f, v_gamma/10f);
+
+	vec3 rgbColor = (texColor.rgb/100)*v_gamma;//vec3(0.5f, 0.5f, v_gamma/10f);
 
 	//final color
 	gl_FragColor = v_color * vec4(rgbColor, texColor.a);
